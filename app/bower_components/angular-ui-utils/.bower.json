@@ -1,0 +1,18 @@
+{
+  "name": "angular-ui-utils",
+  "main": "./ui-utils.js",
+  "dependencies": {
+    "angular": ">= 1.0.2"
+  },
+  "homepage": "https://github.com/angular-ui/ui-utils",
+  "_release": "125cb72d69",
+  "_resolution": {
+    "type": "branch",
+    "branch": "bower",
+    "commit": "125cb72d692f9f116454f338f6a5471f3088f9b9"
+  },
+  "_source": "git://github.com/angular-ui/ui-utils.git",
+  "_target": "bower",
+  "_originalSource": "angular-ui-utils",
+  "_direct": true
+}

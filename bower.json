@@ -1,0 +1,15 @@
+{
+  "name": "AngularJS_Maps",
+  "version": "0.0.0",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "underscore": "~1.8.2"
+  }
+}

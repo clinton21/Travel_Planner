@@ -1,0 +1,95 @@
+<div ng-init="init()">
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+                <div>
+                    <p class="results">Origin Address</p>
+                    <input id="origin-input" class="controls_mod" type="text" placeholder="Enter Origin Address" name="address" ng-model="origin_address">
+                </div>
+                <br>
+                <div>
+                    <p class="results">Destination Address</p>
+                    <input id="destination-input" class="controls_mod" type="text" placeholder="Enter Destination Address" name="address" ng-model="destination_address">
+                </div>
+                <br>
+                <div>
+                    <p class="results">Transportation Mode</p>
+                    <input type="radio" ng-model="travelMode" value="car"><img src="assets/car.png" style="height: 32px; width: 32px">
+                    <input type="radio" ng-model="travelMode" value="subway"><img src="assets/train.png" style="height: 32px; width: 30px">
+                </div>
+                <br>
+                <div>
+                    <button class="btn bg-primary" ng-click="calcRoute()" ng-show="origin_address.length && destination_address.length && travelMode.length" style="width: 100%">Find Route</button>
+                </div>
+
+            </div>
+            <div id="panel-mod" ng-show="routesList.length > 0">
+                <div>
+                    <p class="results">
+                        Source: {{origin_address}}
+                        <br> Destination: {{destination_address}}
+                        <br> Mode: {{tMode}}
+                    </p>
+                </div>
+                <div>
+                    <accordion ng-repeat="route in routesList" class="list-group">
+                        <accordion-group>
+                            <!-- <p style="color:{{colors[route.routeIndexValue]}}">Route {{route.routeIndexValue + 1 }}</p> -->
+                            <accordion-heading>
+                                <p style="background-color: {{route.routeColor}}">Route {{$index + 1 }}
+                                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                                </p>
+                            </accordion-heading>
+                            Distance: {{route.distanceOfRoute}}</br> Time: {{route.timeOfRoute}}
+                            <br>
+                            <br> Route to be taken
+                            <div class="row">
+                                <ul ng-repeat="info in route.routeInfo">
+                                    <li><img ng-src="{{info.vechIcon}}"> {{info.travelInfo | htmlToPlaintext}}</li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-default" ng-click="sendEndLocations(route.routeIndexValue)">Select Route
+                            </button>
+                        </accordion-group>
+                    </accordion>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div>
+                <div id="loading" ng-if="loadingStatus"><img src="assets/loading.gif"></div>
+                <div>
+                	<div>
+                            <p class="results">Select Date</p>
+                            <slider ng-model="searchDate" min="0" step="1" max="30" value="0" on-stop-slide="updateDate()" formater="formaterFn"> </slider>
+                        </div>
+                	<div id="map-canvas"></div>
+                </div>
+                <div>
+                    <div ng-show="suggestionList.length>0">
+                        <div>
+                            <p class="results">Search Radius (Kms)</p>
+                            <slider ng-model="searchRadius" min="1" step="1" max="5" value="2" on-stop-slide="sendEndLocations(tempIndex)"> </slider>
+                        </div>
+                        <table class="table table-striped ">
+                            <thead>
+                                <tr>
+                                    <td>Sr. no</td>
+                                    <td>ID</td>
+                                    <td>Name</td>
+                                    <td>Email ID</td>
+                                </tr>
+                            </thead>
+                            <tr ng-repeat="suggestion in suggestionList | unique:'id'">
+                                <td>{{$index+1}}</td>
+                                <!-- <td><img ng-src="assets/blank-profile.jpg" style="height: 200px; width: 200px"></td> -->
+                                <td>{{suggestion.id}}</td>
+                                <td>{{suggestion.name}}</td>
+                                <td>{{suggestion.emailID}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
