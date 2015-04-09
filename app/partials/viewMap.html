@@ -81,12 +81,13 @@
                                     <td>Email ID</td>
                                 </tr>
                             </thead>
-                            <tr ng-repeat="suggestion in suggestionList | unique:'id'">
+                            <tr ng-repeat="suggestion in suggestionList | unique:'id' | orderBy:'id' | groupData">
                                 <td>{{$index+1}}</td>
                                 <!-- <td><img ng-src="assets/blank-profile.jpg" style="height: 200px; width: 200px"></td> -->
                                 <td>{{suggestion.id}}</td>
                                 <td>{{suggestion.name}}</td>
                                 <td>{{suggestion.emailID}}</td>
+                                <td>{{suggestion.addressType}}</td>
                             </tr>
                         </table>
                     </div>

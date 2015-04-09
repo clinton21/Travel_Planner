@@ -6,7 +6,8 @@
         "email": "vdean0@slashdot.org",
         "lat": "51.79683892",
         "lng": "-0.66723619",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 2,
@@ -15,7 +16,8 @@
         "email": "bburke1@blinklist.com",
         "lat": "51.34820474",
         "lng": "-0.15895475",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 3,
@@ -24,7 +26,8 @@
         "email": "eburns2@mayoclinic.com",
         "lat": "51.67429937",
         "lng": "121.4341",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 4,
@@ -33,7 +36,8 @@
         "email": "wmorrison3@themeforest.net",
         "lat": "51.85118392",
         "lng": "0.06271914",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 5,
@@ -42,7 +46,8 @@
         "email": "cnichols4@ebay.com",
         "lat": "51.27242952",
         "lng": "-0.20395238",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 6,
@@ -51,7 +56,8 @@
         "email": "hlane5@microsoft.com",
         "lat": "51.44988476",
         "lng": "0.49506643",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":""
     },
     {
         "id": 7,
@@ -60,7 +66,8 @@
         "email": "jwatson6@amazon.co.uk",
         "lat": "51.60657471",
         "lng": "-0.69288741",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 8,
@@ -69,7 +76,8 @@
         "email": "kwalker7@jigsy.com",
         "lat": "51.66864386",
         "lng": "-0.79364946",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 9,
@@ -78,7 +86,8 @@
         "email": "sburns8@noaa.gov",
         "lat": "51.75540837",
         "lng": "-0.25620743",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 10,
@@ -87,7 +96,8 @@
         "email": "lpatterson9@sohu.com",
         "lat": "51.530355",
         "lng": "-0.117491",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 11,
@@ -96,7 +106,8 @@
         "email": "gboyda@nature.com",
         "lat": "51.530258",
         "lng": "-0.119712",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 12,
@@ -105,7 +116,8 @@
         "email": "bdixonb@stanford.edu",
         "lat": "51.59369671",
         "lng": "-0.74418854",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 13,
@@ -114,7 +126,8 @@
         "email": "mdanielsc@virginia.edu",
         "lat": "51.60319215",
         "lng": "-0.78244835",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 14,
@@ -123,7 +136,8 @@
         "email": "lrobinsond@dyndns.org",
         "lat": "51.5765684",
         "lng": "-0.6234128",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 15,
@@ -132,7 +146,8 @@
         "email": "aburnse@trellian.com",
         "lat": "51.31680246",
         "lng": "-0.25256052",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 16,
@@ -141,7 +156,8 @@
         "email": "rsmithf@issuu.com",
         "lat": "51.51061188",
         "lng": " -0.34791633",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 17,
@@ -150,7 +166,8 @@
         "email": "bboydg@eepurl.com",
         "lat": "51.06336931",
         "lng": " -0.28136852",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 18,
@@ -159,7 +176,8 @@
         "email": "sbrooksh@spiegel.de",
         "lat": "51.4704615",
         "lng": "-0.18202312",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 19,
@@ -168,7 +186,8 @@
         "email": "wgordoni@redcross.org",
         "lat": "51.61734838",
         "lng": "-0.24031123",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 20,
@@ -177,7 +196,8 @@
         "email": "epattersonj@house.gov",
         "lat": "51.11212723",
         "lng": "-0.13844554",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 21,
@@ -186,7 +206,8 @@
         "email": "wyoungk@miitbeian.gov.cn",
         "lat": "51.14834715",
         "lng": "-0.0621862",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 22,
@@ -195,7 +216,8 @@
         "email": "tmyersl@scientificamerican.com",
         "lat": "51.61790948",
         "lng": "-0.37389093",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 23,
@@ -204,7 +226,8 @@
         "email": "jmoorem@geocities.com",
         "lat": "51.50383596",
         "lng": "0.01155837",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 24,
@@ -213,7 +236,8 @@
         "email": "wdunnn@upenn.edu",
         "lat": "51.28497867",
         "lng": "0.14601771",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 25,
@@ -222,7 +246,8 @@
         "email": "jadamso@telegraph.co.uk",
         "lat": "51.05184957",
         "lng": "-0.12027087",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 26,
@@ -231,7 +256,8 @@
         "email": "ahernandezp@nps.gov",
         "lat": "51.70368189",
         "lng": "0.08580463",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 27,
@@ -240,7 +266,8 @@
         "email": "mwatsonq@nyu.edu",
         "lat": "51.43106957",
         "lng": "0.3681517",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 28,
@@ -249,7 +276,8 @@
         "email": "emorrisonr@hostgator.com",
         "lat": "51.64995666",
         "lng": "0.30948274",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 29,
@@ -258,7 +286,8 @@
         "email": "sallens@zdnet.com",
         "lat": "51.60538682",
         "lng": "0.35052522",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 30,
@@ -267,7 +296,8 @@
         "email": "swhitet@domainmarket.com",
         "lat": "51.37906989",
         "lng": "0.36186917",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 31,
@@ -276,7 +306,8 @@
         "email": "tfowleru@123-reg.co.uk",
         "lat": "51.70994435",
         "lng": "0.21198919",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 32,
@@ -285,7 +316,8 @@
         "email": "swhitev@cargocollective.com",
         "lat": "51.74631447",
         "lng": "-0.16817314",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 33,
@@ -294,7 +326,8 @@
         "email": "phawkinsw@discovery.com",
         "lat": "51.4849057",
         "lng": "-0.0103432",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 34,
@@ -303,7 +336,8 @@
         "email": "crayx@wikimedia.org",
         "lat": "51.39550526",
         "lng": "-0.27498181",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 35,
@@ -312,7 +346,8 @@
         "email": "bmcdonaldy@nature.com",
         "lat": "51.58525326",
         "lng": "-0.26378911",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 36,
@@ -321,7 +356,8 @@
         "email": "jfordz@mashable.com",
         "lat": "51.58525326",
         "lng": "-0.25378911",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 37,
@@ -330,7 +366,8 @@
         "email": "sallen10@pagesperso-orange.fr",
         "lat": "51.59525326",
         "lng": "-0.25378911",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 38,
@@ -339,7 +376,8 @@
         "email": "sfuller11@google.co.uk",
         "lat": "51.59062357",
         "lng": "0.05029429",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 39,
@@ -348,7 +386,8 @@
         "email": "dkelley12@over-blog.com",
         "lat": "51.47238591",
         "lng": "0.25438902",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 40,
@@ -357,7 +396,8 @@
         "email": "emason13@hud.gov",
         "lat": "51.37132513",
         "lng": "-0.73266695",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 41,
@@ -366,7 +406,8 @@
         "email": "sreid14@time.com",
         "lat": "51.73379184",
         "lng": "0.27076995",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 42,
@@ -375,7 +416,8 @@
         "email": "mprice15@dagondesign.com",
         "lat": "51.37957239",
         "lng": "0.23118196",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 43,
@@ -384,7 +426,8 @@
         "email": "afuller16@dedecms.com",
         "lat": "51.20775942",
         "lng": "-0.67714758",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 44,
@@ -393,7 +436,8 @@
         "email": "khunter17@si.edu",
         "lat": "51.23772285",
         "lng": "0.23634252",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 45,
@@ -402,7 +446,8 @@
         "email": "lpayne18@free.fr",
         "lat": "51.75158159",
         "lng": "-0.37491451",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 46,
@@ -411,7 +456,8 @@
         "email": "bbryant19@virginia.edu",
         "lat": "51.30049158",
         "lng": "-0.20354824",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 47,
@@ -420,7 +466,8 @@
         "email": "eday1a@domainmarket.com",
         "lat": "51.81767041",
         "lng": "-0.25047232",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 48,
@@ -429,7 +476,8 @@
         "email": "bjames1b@sbwire.com",
         "lat": "51.45504206",
         "lng": "-0.06990665",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 49,
@@ -438,7 +486,8 @@
         "email": "smurray1c@ihg.com",
         "lat": "51.34900677",
         "lng": "0.21201866",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 50,
@@ -447,7 +496,8 @@
         "email": "twatson1d@istockphoto.com",
         "lat": "51.523589",
         "lng": "-0.116303",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
 
     
@@ -458,7 +508,8 @@
         "email": "Nat_Wilkinson76@gmail.com",
         "lat": "51.39299781",
         "lng": "-1.33599722",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 52,
@@ -467,7 +518,8 @@
         "email": "Adonis_Zulauf@gmail.com",
         "lat": "51.39548599",
         "lng": "-1.33288191",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 53,
@@ -476,7 +528,8 @@
         "email": "Arno@gmail.com",
         "lat": "51.40461949",
         "lng": "-1.33066603",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 54,
@@ -485,7 +538,8 @@
         "email": "Arno@gmail.com",
         "lat": "51.4597",
         "lng": "-0.972148",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 55,
@@ -494,7 +548,8 @@
         "email": "Elyse_Braun@yahoo.com",
         "lat": "51.4650",
         "lng": "-0.97250",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
 
 
@@ -505,7 +560,8 @@
         "email": "Van56@hotmail.com",
         "lat": "51.51851804",
         "lng": "-0.15741288",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 57,
@@ -514,7 +570,8 @@
         "email": "Maximo_Mann@hotmail.com",
         "lat": "51.51953179",
         "lng": "-0.18117203",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 58,
@@ -523,7 +580,8 @@
         "email": "Trinity72@gmail.com",
         "lat": "51.52221657",
         "lng": "-0.1771228",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 59,
@@ -532,7 +590,8 @@
         "email": "Frederick60@gmail.com",
         "lat": "51.51434005",
         "lng": "-0.15549562",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 60,
@@ -541,7 +600,8 @@
         "email": "Valentin.Russel28@gmail.com",
         "lat": "51.469723",
         "lng": "-0.497289",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 61,
@@ -550,7 +610,8 @@
         "email": "Johanna73@hotmail.com",
         "lat": "51.469725",
         "lng": "-0.497290",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 62,
@@ -559,7 +620,8 @@
         "email": "Rhea_Bosco@hotmail.com",
         "lat": "51.47065",
         "lng": "-0.387325",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 63,
@@ -568,7 +630,8 @@
         "email": "Reba.Goyette@yahoo.com",
         "lat": "51.46244",
         "lng": "-0.361568",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 64,
@@ -577,7 +640,8 @@
         "email": "Albert.King16@gmail.com",
         "lat": "51.476004",
         "lng": "-0.368952",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 65,
@@ -586,7 +650,8 @@
         "email": "Gabrielle_Braun@hotmail.com",
         "lat": "51.472575",
         "lng": "-0.380481",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
 
     {
@@ -596,7 +661,8 @@
         "email": "Shaina12@gmail.com",
         "lat": "51.498789",
         "lng": "-0.201336",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 67,
@@ -605,7 +671,8 @@
         "email": "Lonnie.Feeney19@hotmail.com",
         "lat": "51.50542765",
         "lng": "-0.17282227",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"office"
     },
     {
         "id": 68,
@@ -614,7 +681,8 @@
         "email": "Joey_Mayer@gmail.com",
         "lat": "51.49013534",
         "lng": "-0.17381558",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     },
     {
         "id": 69,
@@ -623,7 +691,8 @@
         "email": "Elmo_Johnson@gmail.com",
         "lat": "51.500810",
         "lng": "-0.192816",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"last meeting location"
     },
     {
         "id": 70,
@@ -631,8 +700,9 @@
         "last_name": "Leannon",
         "email": "Penelope.Leannon@gmail.com",
         "lat": "51.49878905",
-        "lng": "-0.20133555",
-        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg"
+        "lng": "-0.20133570",
+        "dp":"https://s3.amazonaws.com/uifaces/faces/twitter/rogie/128.jpg",
+        "address_type":"home"
     }
 
 
