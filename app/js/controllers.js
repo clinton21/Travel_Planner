@@ -168,9 +168,13 @@ angular
 					.getElementById('map-canvas'),
 					mapOptions);
 				var eventControlDiv = document.createElement('div');
-				var eventControl = new CenterControl(eventControlDiv);
+				var eventControl = new EventControl(eventControlDiv);
 				eventControlDiv.index = 1;
 				$scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+				var legendDiv = document.createElement('DIV');
+				var legend = new Legend(legendDiv);
+				legendDiv.index = 1;
+				$scope.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendDiv);
 			};
 
 			$scope.updateDate = function() {
@@ -181,7 +185,36 @@ angular
 				return moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
 			};
 
-			function CenterControl(controlDiv) {
+			function Legend(controlDiv, map) {
+				// Set CSS styles for the DIV containing the control
+				// Setting padding to 5 px will offset the control
+				// from the edge of the map
+				controlDiv.style.padding = '5px';
+
+				// Set CSS for the control border
+				var controlUI = document.createElement('DIV');
+				controlUI.style.backgroundColor = 'white';
+				controlUI.style.borderStyle = 'solid';
+				controlUI.style.borderWidth = '1px';
+				controlUI.title = 'Legend';
+				controlDiv.appendChild(controlUI);
+
+				// Set CSS for the control text
+				var controlText = document.createElement('DIV');
+				controlText.style.fontFamily = 'Roboto';
+				controlText.style.fontSize = '16px';
+				controlText.style.paddingLeft = '4px';
+				controlText.style.paddingRight = '4px';
+
+				// Add the text
+				controlText.innerHTML = '<b>Legend</b><br />' +
+					'<img src="assets/src_dest_marker.png" /> Source/Destination Marker<br />' +
+					'<img src="assets/station_marker.png" /> Station<br />' +
+					'<img src="assets/people_marker.png" /> Client<br />'
+					controlUI.appendChild(controlText);
+			}
+
+			function EventControl(controlDiv) {
 
 				// // Set CSS for the control border
 				var controlUI = document.createElement('div');
@@ -215,10 +248,10 @@ angular
 
 				google.maps.event.addDomListener(checkbox, 'change', function() {
 					if ($('#eventCheckBox').prop("checked")) {
-						console.log('Is Checked');
+						
 						document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
 					} else {
-						console.log('Is Unchecked');
+
 						document.getElementById('eventLabel').innerHTML = 'Show Events';
 					}
 				});
