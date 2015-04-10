@@ -167,10 +167,10 @@ angular
                 $scope.map = new google.maps.Map(document
                     .getElementById('map-canvas'),
                     mapOptions);
-                var eventControlDiv = document.createElement('div');
-                var eventControl = new CenterControl(eventControlDiv);
-                eventControlDiv.index = 1;
-                $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+                // var eventControlDiv = document.createElement('div');
+                // var eventControl = new CenterControl(eventControlDiv);
+                // eventControlDiv.index = 1;
+                // $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
             };
 
             $scope.updateDate = function() {
@@ -181,49 +181,49 @@ angular
                 return moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
             };
 
-            function CenterControl(controlDiv) {
+            // function CenterControl(controlDiv) {
 
-                // // Set CSS for the control border
-                var controlUI = document.createElement('div');
-                controlUI.style.backgroundColor = '#fff';
-                controlUI.style.border = '2px solid #fff';
-                controlUI.style.borderRadius = '3px';
-                controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-                controlUI.style.cursor = 'pointer';
-                controlUI.style.marginBottom = '22px';
-                controlUI.style.textAlign = 'center';
-                controlDiv.appendChild(controlUI);
+            //     // // Set CSS for the control border
+            //     var controlUI = document.createElement('div');
+            //     controlUI.style.backgroundColor = '#fff';
+            //     controlUI.style.border = '2px solid #fff';
+            //     controlUI.style.borderRadius = '3px';
+            //     controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+            //     controlUI.style.cursor = 'pointer';
+            //     controlUI.style.marginBottom = '22px';
+            //     controlUI.style.textAlign = 'center';
+            //     controlDiv.appendChild(controlUI);
 
-                var checkbox = document.createElement('input');
-                checkbox.type = "checkbox";
-                checkbox.name = "eventCheckBox";
-                checkbox.value = "value";
-                checkbox.id = "eventCheckBox";
+            //     var checkbox = document.createElement('input');
+            //     checkbox.type = "checkbox";
+            //     checkbox.name = "eventCheckBox";
+            //     checkbox.value = "value";
+            //     checkbox.id = "eventCheckBox";
 
-                var label = document.createElement('label')
-                label.style.fontFamily = 'Roboto';
-                label.style.fontSize = '20px';
-                label.style.paddingLeft = '5px';
-                label.style.paddingRight = '5px';
-                label.htmlFor = "id";
-                label.id = "eventLabel";
-                label.name = "eventLabel";
-                label.innerHTML = 'Show Events';
+            //     var label = document.createElement('label')
+            //     label.style.fontFamily = 'Roboto';
+            //     label.style.fontSize = '20px';
+            //     label.style.paddingLeft = '5px';
+            //     label.style.paddingRight = '5px';
+            //     label.htmlFor = "id";
+            //     label.id = "eventLabel";
+            //     label.name = "eventLabel";
+            //     label.innerHTML = 'Show Events';
 
-                controlUI.appendChild(checkbox);
-                controlUI.appendChild(label);
+            //     controlUI.appendChild(checkbox);
+            //     controlUI.appendChild(label);
 
-                google.maps.event.addDomListener(checkbox, 'change', function() {
-                    if ($('#eventCheckBox').prop("checked")) {
-                        console.log('Is Checked');
-                        document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
-                    } else {
-                        console.log('Is Unchecked');
-                        document.getElementById('eventLabel').innerHTML = 'Show Events';
-                    }
-                });
+            //     google.maps.event.addDomListener(checkbox, 'change', function() {
+            //         if ($('#eventCheckBox').prop("checked")) {
+            //             console.log('Is Checked');
+            //             document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
+            //         } else {
+            //             console.log('Is Unchecked');
+            //             document.getElementById('eventLabel').innerHTML = 'Show Events';
+            //         }
+            //     });
 
-            }
+            // }
 
             function createMarker(map_center, map_address,
                 marker_type) {
@@ -536,6 +536,24 @@ angular
                 }
             };
 
+            function remove_duplicates(objectsArray) {
+                var usedObjects = {};
+
+                for (var i = objectsArray.length - 1; i >= 0; i--) {
+                    var so = JSON.stringify(objectsArray[i]);
+
+                    if (usedObjects[so]) {
+                        objectsArray.splice(i, 1);
+
+                    } else {
+                        usedObjects[so] = true;
+                    }
+                }
+
+                return objectsArray;
+
+            }
+
             $scope.sendEndLocations = function(routeIndex) {
                 $scope.tempIndex = routeIndex;
                 $scope.loadingStatus = true;
@@ -619,35 +637,52 @@ angular
                                         // console.log(payload.data);
                                         $scope.suggestionList.length = 0;
                                         var dataObj = payload.data;
-                                        for (var i = 0; i < $scope.circles.length; i++) {
-                                            var bounds = $scope.circles[i]
-                                                .getBounds();
-                                            for (var j = 0; j < dataObj.length; j++) {
-                                                var map_center = new google.maps.LatLng(
-                                                    Number(dataObj[j].lat),
-                                                    Number(dataObj[j].lng));
-                                                if (bounds
-                                                    .contains(map_center)) {
-                                                    var sname = dataObj[j].first_name + " " + dataObj[j].last_name;
-                                                    //here is where u get clien details from the JSON file
-                                                    $scope.suggestionList
-                                                        .push({
-                                                            name: sname,
-                                                            emailID: dataObj[j].email,
-                                                            id: dataObj[j].id,
-                                                            postCode: dataObj[j].Postcode,
-                                                            addressType: dataObj[j].address_type
+
+                                        for (var userIndex = 0; userIndex < dataObj.length; userIndex++) {
+                                            var addressArray = [];
+                                            addressArray.length = 0;
+                                            var sname;
+
+                                            for (var addressIndex = 0; addressIndex < dataObj[userIndex].known_addresses.length; addressIndex++) {
+                                                var current_user_address = dataObj[userIndex].known_addresses[addressIndex];
+                                                console.log(dataObj[userIndex].known_addresses.length);
+                                                for (var circleIndex = 0; circleIndex < $scope.circles.length; circleIndex++) {
+
+
+                                                    var bounds = $scope.circles[circleIndex].getBounds();
+                                                    var map_center = new google.maps.LatLng(
+                                                        Number(current_user_address.lat),
+                                                        Number(current_user_address.lng));
+                                                    if (bounds.contains(map_center)) {
+                                                        addressArray.push({
+                                                            address_type: current_user_address.address_type
                                                         });
-                                                    createMarker(
-                                                        map_center,
-                                                        sname,
-                                                        "suggestion");
+                                                        sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
+                                                        createMarker(
+                                                            map_center,
+                                                            sname + " - " + current_user_address.address_type,
+                                                            "suggestion");
+
+                                                    }
                                                 }
+                                            }
+                                            if (addressArray.length > 0) {
+                                                console.log(addressArray);
+                                                $scope.suggestionList
+                                                    .push({
+                                                        name: sname,
+                                                        emailID: dataObj[userIndex].email,
+                                                        id: dataObj[userIndex].id,
+                                                        postCode: dataObj[userIndex].Postcode,
+                                                        addresses: remove_duplicates(addressArray),
+                                                        rowspan: addressArray.length
+                                                    });
+
                                             }
 
                                         }
-                                        if($scope.suggestionList.length<=0){
-                                        	$scope.errorMsg="No clients found. Please try selecting a different route or increase the search radius."
+                                        if ($scope.suggestionList.length <= 0) {
+                                            $scope.errorMsg = "No clients found. Please try selecting a different route or increase the search radius."
                                         }
 
                                     },
@@ -730,18 +765,11 @@ angular
             };
 
 
-}])
+        }
+    ])
 
 .filter('htmlToPlaintext', [function() {
     return function(text) {
         return String(text).replace(/<[^>]+>/gm, '');
     };
-}])
-
-.filter('groupData',[function(){
-	return function(text) {
-	var groups=_.groupBy(text, 'id');
-	console.log(groups);
-	return text;
-	};
 }]);
