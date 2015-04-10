@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### 2.10.2
+
+* fixed moment-with-locales in browser env caused by esperanto change
+
+### 2.10.1
+
+* regression: Add moment.duration.fn back
+
 ### 2.10.0
 
 Ported code to es6 modules.

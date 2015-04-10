@@ -33,6 +33,7 @@ angular
             $scope.searchRadius = 2;
             $scope.tempIndex;
             $scope.sliderDate;
+            $scope.errorMsg;
 
             $scope.init = function() {
                 var mapOptions = {
@@ -166,10 +167,10 @@ angular
                 $scope.map = new google.maps.Map(document
                     .getElementById('map-canvas'),
                     mapOptions);
-                // var eventControlDiv = document.createElement('div');
-                // var eventControl = new CenterControl(eventControlDiv);
-                // eventControlDiv.index = 1;
-                // $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+                var eventControlDiv = document.createElement('div');
+                var eventControl = new CenterControl(eventControlDiv);
+                eventControlDiv.index = 1;
+                $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
             };
 
             $scope.updateDate = function() {
@@ -248,7 +249,6 @@ angular
                 var marker = new google.maps.Marker({
                     map: $scope.map,
                     position: map_center,
-                    // animation: google.maps.Animation.BOUNCE,
                     title: map_address,
                     icon: img
 
@@ -297,7 +297,6 @@ angular
                     (input), {
                         bounds: defaultbounds
                     });
-                // searchBox.setBounds()
                 google.maps.event
                     .addListener(
                         searchBox,
@@ -354,8 +353,6 @@ angular
                         origin: start,
                         destination: end,
                         optimizeWaypoints: true,
-                        // travelMode:
-                        // google.maps.TravelMode.DRIVING,
                         travelMode: google.maps.TravelMode.TRANSIT,
                         provideRouteAlternatives: true,
                         transitOptions: {
@@ -649,6 +646,9 @@ angular
                                             }
 
                                         }
+                                        if($scope.suggestionList.length<=0){
+                                        	$scope.errorMsg="No clients found. Please try selecting a different route or increase the search radius."
+                                        }
 
                                     },
                                     function(
@@ -740,9 +740,8 @@ angular
 
 .filter('groupData',[function(){
 	return function(text) {
-	for(var i=0;i<text.length;i++){
-		console.log(text[i].name);
-	}
+	var groups=_.groupBy(text, 'id');
+	console.log(groups);
 	return text;
 	};
 }]);
