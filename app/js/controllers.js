@@ -15,7 +15,6 @@ angular
 
             var LatLong = new google.maps.LatLng(51.5072,
                 0.1275);
-            // $scope.geocoder = new google.maps.Geocoder();
             $scope.markers = [];
             $scope.colors = ['Red', 'Orange', 'Yellow',
                 'Green', 'Blue', 'Indigo', 'Violet'
@@ -167,10 +166,10 @@ angular
                 $scope.map = new google.maps.Map(document
                     .getElementById('map-canvas'),
                     mapOptions);
-                var eventControlDiv = document.createElement('div');
-                var eventControl = new CenterControl(eventControlDiv);
-                eventControlDiv.index = 1;
-                $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+                // var eventControlDiv = document.createElement('div');
+                // var eventControl = new CenterControl(eventControlDiv);
+                // eventControlDiv.index = 1;
+                // $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
             };
 
             $scope.updateDate = function() {
@@ -390,25 +389,11 @@ angular
                         $scope.destination_address,
                         "src_dest");
                     $scope.routeCallbackData = response;
-                    // console.log(response);
                     for (var i = 0, len = response.routes.length; i < len; i++) {
                         var currentRoute = response.routes[i];
                         var steps = currentRoute.legs[0].steps;
-                        // console.log(currentRoute.overview_path);
                         $scope.polyLineData[i] = currentRoute.overview_path;
                         createPolyRoute(steps, i, currentRoute);
-                        // new google.maps.DirectionsRenderer({
-                        // map: $scope.map,
-                        // directions: response,
-                        // routeIndex: i,
-                        // suppressMarkers: true,
-                        // optimizeWaypoints: true,
-                        // polylineOptions: {
-                        // strokeColor: $scope.colors[i],
-                        // strokeOpacity: 0.6,
-                        // strokeWeight: 5
-                        // }
-                        // });
 
                     }
                     var bounds = new google.maps.LatLngBounds();
@@ -498,8 +483,6 @@ angular
                                     .setOptions(polyUnselected);
                             });
                     $scope.polyLine.push(newPoly);
-                    // console.log(steps.length);
-                    // console.log('Route'+(Number(i)+1));
                     for (var j = 0; j < steps.length; j++) {
                         if (steps[j].travel_mode === "TRANSIT") {
                             var stop_name = steps[j].transit.arrival_stop.name;
@@ -511,9 +494,6 @@ angular
                             }
                             var vech = steps[j].transit.line.vehicle.name;
                             var icon = steps[j].transit.line.vehicle.icon;
-                            // console.log("Station
-                            // Stop:"+stop_name+"
-                            // Line:"+line_name+" Icon:"+icon);
                             route_info
                                 .push({
                                     travelInfo: "Take " + vech + " to " + stop_name + " along " + line_name,
@@ -542,12 +522,10 @@ angular
                         .push({
                             distanceOfRoute: currentRoute.legs[0].distance.text,
                             timeOfRoute: currentRoute.legs[0].duration.text,
-                            routeIndexValue: i,
                             routeColor: $scope.colors[i],
                             routeInfo: route_info,
                             pOverview: currentRoute.overview_polyline
                         });
-
                     $scope.loadingStatus = false;
                     $scope.$apply();
                 }
@@ -606,8 +584,6 @@ angular
 
 
                     for (var i = 0; i < $scope.routeCallbackData.routes[routeIndex].legs[0].steps.length; i++) {
-                        // console.log($scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value);
-                        // tempDist+=$scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
                         if (tempDist < 2000) {
                             tempDist += $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
                         } else if (tempDist > 2000) {
@@ -625,8 +601,6 @@ angular
                             tempDist = $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
                         }
                     }
-                    // console.log(tempDist);
-
                 }
 
                 $http({
@@ -639,7 +613,6 @@ angular
                     })
                     .success(
                         function(data) {
-                            // alert("Data Sent");
                             var getData = userData
                                 .getUserData();
                             getData
