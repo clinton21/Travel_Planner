@@ -11,7 +11,8 @@ angular
 		'$stateParams',
 		'x2js',
 		'userData',
-		function($scope, $http, $stateParams, x2js, userData) {
+		'$q',
+		function($scope, $http, $stateParams, x2js, userData, $q) {
 
 			var LatLong = new google.maps.LatLng(51.5072,
 				0.1275);
@@ -34,6 +35,8 @@ angular
 			$scope.tempIndex;
 			$scope.sliderDate;
 			$scope.errorMsg;
+			$scope.geoPoint;
+
 
 			$scope.init = function() {
 				var mapOptions = {
@@ -186,17 +189,29 @@ angular
 			};
 
 			function geoCodeAddress() {
-				console.log('reached here');
 				var geocoder = new google.maps.Geocoder();
-	  			geocoder.geocode( { 'address': $scope.origin_address}, function(results, status) {
-	    		if (status == google.maps.GeocoderStatus.OK) {
-	    				console.log(results[0].geometry.location);
-		          		return results[0].geometry.location;
-		    		} else {
-		    			console.log(status);
-		      			return 'error';
-		    		}
-	  			});
+				var q = $q.defer();
+				geocoder.geocode({
+					'address': $scope.origin_address
+				}, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						var data = results[0].geometry.location;
+						createMarker(
+							data,
+							$scope.origin_address, "src_dest");
+						return q.resolve(data);
+					} else {
+						console.log(status);
+						return q.reject('error');
+					}
+				});
+				return q.promise;
+			}
+			$scope.resetDestination = function() {
+				if (!$scope.showDestination) {
+					$scope.destination_address = null;
+					$scope.travelMode = null;
+				}
 			}
 
 			// function Legend(controlDiv, map) {
@@ -385,11 +400,17 @@ angular
 				$scope.srcDestMarkers.length = 0;
 				$scope.routesList.length = 0;
 				$scope.suggestionList.length = 0;
-				
+
 				var start = $scope.origin_address;
-				if(_.isUndefined($scope.destination_address)){
-					console.log(geoCodeAddress());
-				}else{
+				if (_.isUndefined($scope.destination_address) || _.isNull($scope.destination_address)) {
+					geoCodeAddress().then(function(geoData) {
+						$scope.geoPoint = geoData;
+						$scope.sendEndLocations(-1);
+
+					}, function(error) {
+						console.log('GeoCoding Error');
+					});
+				} else {
 					var directionsService = new google.maps.DirectionsService();
 					var directionsDisplay = new google.maps.DirectionsRenderer();
 					var end = $scope.destination_address;
@@ -418,7 +439,7 @@ angular
 
 					directionsService.route(request, plotRoute);
 					directionsDisplay.setMap($scope.map);
-				}	
+				}
 			};
 
 			function plotRoute(response, status) {
@@ -601,36 +622,65 @@ angular
 
 			}
 
-			$scope.sendEndLocations = function(routeIndex) {
-				$scope.tempIndex = routeIndex;
-				$scope.loadingStatus = true;
-				var locData = [];
-				removeMarkers();
-				removeCircles();
-				$scope.circles.length = 0;
-				$scope.suggestionList.length = 0;
-				$scope.suggestionList = [];
-				locData.length = 0;
 
-				if ($scope.tMode === 'subway') {
-					for (var counter = 0; counter < $scope.routesList[routeIndex].routeInfo.length; counter++) {
-						// console.log($scope.routesList[routeIndex].routeInfo[counter].end_location);
-						locData[counter] = $scope.routesList[routeIndex].routeInfo[counter].end_location;
-						if (typeof locData[counter] !== 'undefined') {
-							var c = new google.maps.Circle({
-								strokeColor: '#000000',
-								strokeOpacity: 0.8,
-								strokeWeight: 2,
-								fillColor: "#EBB11A",
-								fillOpacity: 0.20,
-								map: $scope.map,
-								center: locData[counter],
-								radius: ($scope.searchRadius * 1000)
-							});
-							$scope.circles.push(c);
+			function createCircles(routeIndex) {
+				q = $q.defer();
+				if (routeIndex != -1) {
+					if ($scope.tMode === 'subway') {
+						for (var counter = 0; counter < $scope.routesList[routeIndex].routeInfo.length; counter++) {
+							$scope.locData[counter] = $scope.routesList[routeIndex].routeInfo[counter].end_location;
+							if (typeof $scope.locData[counter] !== 'undefined') {
+								var c = new google.maps.Circle({
+									strokeColor: '#000000',
+									strokeOpacity: 0.8,
+									strokeWeight: 2,
+									fillColor: "#EBB11A",
+									fillOpacity: 0.20,
+									map: $scope.map,
+									center: $scope.locData[counter],
+									radius: ($scope.searchRadius * 1000)
+								});
+								$scope.circles.push(c);
+								q.resolve();
+							}
 						}
+					} else if ($scope.tMode === 'car') {
+						var c = new google.maps.Circle({
+							strokeColor: '#000000',
+							strokeOpacity: 0.8,
+							strokeWeight: 2,
+							fillColor: "#EBB11A",
+							fillOpacity: 0.20,
+							map: $scope.map,
+							center: $scope.routeCallbackData.routes[0].legs[0].end_location,
+							radius: ($scope.searchRadius * 1000)
+						});
+						$scope.circles.push(c);
+						var tempDist = 0;
+
+
+						for (var i = 0; i < $scope.routeCallbackData.routes[routeIndex].legs[0].steps.length; i++) {
+							if (tempDist < 2000) {
+								tempDist += $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
+							} else if (tempDist > 2000) {
+								var c = new google.maps.Circle({
+									strokeColor: '#000000',
+									strokeOpacity: 0.8,
+									strokeWeight: 2,
+									fillColor: "#EBB11A",
+									fillOpacity: 0.20,
+									map: $scope.map,
+									center: $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i - 1].end_location,
+									radius: ($scope.searchRadius * 1000)
+								});
+								$scope.circles.push(c);
+								tempDist = $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
+							}
+						}
+						q.resolve();
 					}
-				} else if ($scope.tMode === 'car') {
+				} else if (routeIndex == -1) {
+
 					var c = new google.maps.Circle({
 						strokeColor: '#000000',
 						strokeOpacity: 0.8,
@@ -638,175 +688,191 @@ angular
 						fillColor: "#EBB11A",
 						fillOpacity: 0.20,
 						map: $scope.map,
-						center: $scope.routeCallbackData.routes[0].legs[0].end_location,
+						center: $scope.geoPoint,
 						radius: ($scope.searchRadius * 1000)
 					});
 					$scope.circles.push(c);
-					var tempDist = 0;
+					$scope.map.fitBounds(c.getBounds());
+					q.resolve();
 
-
-					for (var i = 0; i < $scope.routeCallbackData.routes[routeIndex].legs[0].steps.length; i++) {
-						if (tempDist < 2000) {
-							tempDist += $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
-						} else if (tempDist > 2000) {
-							var c = new google.maps.Circle({
-								strokeColor: '#000000',
-								strokeOpacity: 0.8,
-								strokeWeight: 2,
-								fillColor: "#EBB11A",
-								fillOpacity: 0.20,
-								map: $scope.map,
-								center: $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i - 1].end_location,
-								radius: ($scope.searchRadius * 1000)
-							});
-							$scope.circles.push(c);
-							tempDist = $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
-						}
-					}
+				} else {
+					q.reject('error');
 				}
-
-				$http({
-						url: '',
-						method: "POST",
-						data: angular.toJson(locData),
-						headers: {
-							'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-						}
-					})
-					.success(
-						function(data) {
-							var getData = userData
-								.getUserData();
-							getData
-								.then(
-									function(
-										payload) {
-										$scope.suggestionList.length = 0;
-										var dataObj = payload.data;
-
-										for (var userIndex = 0; userIndex < dataObj.length; userIndex++) {
-											var addressArray = [];
-											addressArray.length = 0;
-											var sname;
-
-											for (var addressIndex = 0; addressIndex < dataObj[userIndex].known_addresses.length; addressIndex++) {
-												var current_user_address = dataObj[userIndex].known_addresses[addressIndex];
-												for (var circleIndex = 0; circleIndex < $scope.circles.length; circleIndex++) {
-
-
-													var bounds = $scope.circles[circleIndex].getBounds();
-													var map_center = new google.maps.LatLng(
-														Number(current_user_address.lat),
-														Number(current_user_address.lng));
-													if (bounds.contains(map_center)) {
-														addressArray.push({
-															address_type: current_user_address.address_type + " - actual street address here " + (addressIndex + 1)
-														});
-														sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
-														createMarker(
-															map_center,
-															sname + " - " + current_user_address.address_type,
-															"suggestion");
-													}
-												}
-											}
-											if (addressArray.length > 0) {
-												$scope.suggestionList
-													.push({
-														name: sname,
-														emailID: dataObj[userIndex].email,
-														id: dataObj[userIndex].id,
-														postCode: dataObj[userIndex].Postcode,
-														addresses: remove_duplicates(addressArray),
-														rowspan: addressArray.length
-													});
-
-											}
-
-										}
-										if ($scope.suggestionList.length <= 0) {
-											$scope.errorMsg = "No clients found. Please try selecting a different route or increase the search radius."
-										}
-
-									},
-									function(
-										errorPayload) {
-										$log
-											.error(
-												'failure loading list',
-												errorPayload);
-									});
-							if ($scope.tMode === 'subway') {
-								// getRouteBox(routeIndex);
-								$http
-									.get(
-										'assets/stations.kml')
-									.then(
-										function(
-											response) {
-											var tempRouteData = $scope.routeCallbackData.routes[routeIndex].overview_path;
-											var stations = x2js
-												.xml_str2json(response.data);
-											var StationObj = stations.kml.Document.Placemark
-											var stations = [];
-											// console.log(tempRouteData);
-
-											for (var index = 0; index < StationObj.length; index++) {
-												var Sname = StationObj[index].name;
-												var temp1 = StationObj[index].Point.coordinates;
-												var temp2 = temp1
-													.split(",");
-												temp2[0] = temp2[0]
-													.replace(
-														"-.",
-														"-0.");
-												temp2[1] = temp2[1]
-													.replace(
-														"-.",
-														"-0.");
-
-												var map_center = new google.maps.LatLng(
-													Number(temp2[1]),
-													Number(temp2[0]));
-												for (var j = 0; j < tempRouteData.length; j++) {
-													var point_center = new google.maps.LatLng(
-														tempRouteData[j]
-														.lat(),
-														tempRouteData[j]
-														.lng());
-													var dist = google.maps.geometry.spherical
-														.computeDistanceBetween(
-															map_center,
-															point_center);
-
-													dist = Number(dist)
-														// console.log(dist);
-													if (dist < 150) {
-														// console.log(dist);
-														stations
-															.push({
-																stationName: Sname,
-																stationLat: temp2[1],
-																stationLng: temp2[0]
-															});
-														createMarker(
-															map_center,
-															Sname,
-															"station");
-														break;
-													}
-												}
-											}
-											$scope.stationData = stations;
-
-										});
-							}
-
-						});
-				setMarkers();
-				$scope.loadingStatus = false;
+				return q.promise;
 			};
 
+			function findClients(payload) {
+				$scope.suggestionList.length = 0;
+				var dataObj = payload.data;
+
+				for (var userIndex = 0; userIndex < dataObj.length; userIndex++) {
+					var addressArray = [];
+					addressArray.length = 0;
+					var sname;
+
+					for (var addressIndex = 0; addressIndex < dataObj[userIndex].known_addresses.length; addressIndex++) {
+						var current_user_address = dataObj[userIndex].known_addresses[addressIndex];
+						for (var circleIndex = 0; circleIndex < $scope.circles.length; circleIndex++) {
+
+
+							var bounds = $scope.circles[circleIndex].getBounds();
+							var map_center = new google.maps.LatLng(
+								Number(current_user_address.lat),
+								Number(current_user_address.lng));
+							if (bounds.contains(map_center)) {
+								addressArray.push({
+									address_type: current_user_address.address_type + " - actual street address here " + (addressIndex + 1)
+								});
+								sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
+								createMarker(
+									map_center,
+									sname + " - " + current_user_address.address_type,
+									"suggestion");
+							}
+						}
+					}
+					if (addressArray.length > 0) {
+						$scope.suggestionList
+							.push({
+								name: sname,
+								emailID: dataObj[userIndex].email,
+								id: dataObj[userIndex].id,
+								postCode: dataObj[userIndex].Postcode,
+								addresses: remove_duplicates(addressArray),
+								rowspan: addressArray.length
+							});
+
+					}
+
+				}
+				if ($scope.suggestionList.length <= 0) {
+					$scope.errorMsg = "No clients found. Please try selecting a different route or increase the search radius."
+				}
+
+			}
+
+			function findStations(routeIndex) {
+				// getRouteBox(routeIndex);
+				$http
+					.get(
+						'assets/stations.kml')
+					.then(
+						function(
+							response) {
+							var tempRouteData = $scope.routeCallbackData.routes[routeIndex].overview_path;
+							var stations = x2js
+								.xml_str2json(response.data);
+							var StationObj = stations.kml.Document.Placemark
+							var stations = [];
+							// console.log(tempRouteData);
+
+							for (var index = 0; index < StationObj.length; index++) {
+								var Sname = StationObj[index].name;
+								var temp1 = StationObj[index].Point.coordinates;
+								var temp2 = temp1
+									.split(",");
+								temp2[0] = temp2[0]
+									.replace(
+										"-.",
+										"-0.");
+								temp2[1] = temp2[1]
+									.replace(
+										"-.",
+										"-0.");
+
+								var map_center = new google.maps.LatLng(
+									Number(temp2[1]),
+									Number(temp2[0]));
+								for (var j = 0; j < tempRouteData.length; j++) {
+									var point_center = new google.maps.LatLng(
+										tempRouteData[j]
+										.lat(),
+										tempRouteData[j]
+										.lng());
+									var dist = google.maps.geometry.spherical
+										.computeDistanceBetween(
+											map_center,
+											point_center);
+
+									dist = Number(dist)
+										// console.log(dist);
+									if (dist < 150) {
+										// console.log(dist);
+										stations
+											.push({
+												stationName: Sname,
+												stationLat: temp2[1],
+												stationLng: temp2[0]
+											});
+										createMarker(
+											map_center,
+											Sname,
+											"station");
+										break;
+									}
+								}
+							}
+							$scope.stationData = stations;
+
+						});
+			}
+
+
+
+			$scope.sendEndLocations = function(routeIndex) {
+				if (_.isUndefined(routeIndex)) {
+					routeIndex = -1;
+				}
+				$scope.tempIndex = routeIndex;
+				$scope.loadingStatus = true;
+				$scope.locData = [];
+				removeMarkers();
+				removeCircles();
+				$scope.circles.length = 0;
+				$scope.suggestionList.length = 0;
+				$scope.suggestionList = [];
+				$scope.locData.length = 0;
+				createCircles(routeIndex).then(function() {
+					$http({
+							url: '',
+							method: "POST",
+							data: angular.toJson($scope.locData),
+							headers: {
+								'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+							}
+						})
+						.success(
+							function(data) {
+								var getData = userData
+									.getUserData();
+								getData
+									.then(
+										function(
+											payload) {
+											findClients(payload);
+										},
+										function(
+											errorPayload) {
+											$log
+												.error(
+													'failure loading list',
+													errorPayload);
+										});
+								if ($scope.tMode === 'subway' && (!_.isUndefined($scope.destination_address) || !_.isNull($scope.destination_address))) {
+									findStations(routeIndex);
+								}
+
+							});
+					setMarkers();
+					$scope.loadingStatus = false;
+
+
+				}, function(error) {
+					console.log('Error in generating circles');
+				});
+
+
+			}
 
 		}
 	])
