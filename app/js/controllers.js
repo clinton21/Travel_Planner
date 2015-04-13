@@ -185,6 +185,20 @@ angular
 				return moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
 			};
 
+			function geoCodeAddress() {
+				console.log('reached here');
+				var geocoder = new google.maps.Geocoder();
+	  			geocoder.geocode( { 'address': $scope.origin_address}, function(results, status) {
+	    		if (status == google.maps.GeocoderStatus.OK) {
+	    				console.log(results[0].geometry.location);
+		          		return results[0].geometry.location;
+		    		} else {
+		    			console.log(status);
+		      			return 'error';
+		    		}
+	  			});
+			}
+
 			// function Legend(controlDiv, map) {
 			// 	// Set CSS styles for the DIV containing the control
 			// 	// Setting padding to 5 px will offset the control
@@ -371,40 +385,40 @@ angular
 				$scope.srcDestMarkers.length = 0;
 				$scope.routesList.length = 0;
 				$scope.suggestionList.length = 0;
-				var directionsService = new google.maps.DirectionsService();
-				var directionsDisplay = new google.maps.DirectionsRenderer();
-				$scope.origin_address = document
-					.getElementById('origin-input').value;
-				$scope.destination_address = document
-					.getElementById('destination-input').value;
+				
 				var start = $scope.origin_address;
-				var end = $scope.destination_address;
-				var request;
-				$scope.tMode = $scope.travelMode;
-				if ($scope.tMode === 'subway') {
-					request = {
-						origin: start,
-						destination: end,
-						optimizeWaypoints: true,
-						travelMode: google.maps.TravelMode.TRANSIT,
-						provideRouteAlternatives: true,
-						transitOptions: {
-							modes: [google.maps.TransitMode.SUBWAY],
-						},
-					};
-				} else if ($scope.tMode === 'car') {
-					request = {
-						origin: start,
-						destination: end,
-						optimizeWaypoints: true,
-						travelMode: google.maps.TravelMode.DRIVING,
-						provideRouteAlternatives: true,
-					};
-				}
+				if(_.isUndefined($scope.destination_address)){
+					console.log(geoCodeAddress());
+				}else{
+					var directionsService = new google.maps.DirectionsService();
+					var directionsDisplay = new google.maps.DirectionsRenderer();
+					var end = $scope.destination_address;
+					var request;
+					$scope.tMode = $scope.travelMode;
+					if ($scope.tMode === 'subway') {
+						request = {
+							origin: start,
+							destination: end,
+							optimizeWaypoints: true,
+							travelMode: google.maps.TravelMode.TRANSIT,
+							provideRouteAlternatives: true,
+							transitOptions: {
+								modes: [google.maps.TransitMode.SUBWAY],
+							},
+						};
+					} else if ($scope.tMode === 'car') {
+						request = {
+							origin: start,
+							destination: end,
+							optimizeWaypoints: true,
+							travelMode: google.maps.TravelMode.DRIVING,
+							provideRouteAlternatives: true,
+						};
+					}
 
-				directionsService.route(request, plotRoute);
-				directionsDisplay.setMap($scope.map);
-
+					directionsService.route(request, plotRoute);
+					directionsDisplay.setMap($scope.map);
+				}	
 			};
 
 			function plotRoute(response, status) {
