@@ -167,14 +167,14 @@ angular
 				$scope.map = new google.maps.Map(document
 					.getElementById('map-canvas'),
 					mapOptions);
-				var eventControlDiv = document.createElement('div');
-				var eventControl = new EventControl(eventControlDiv);
-				eventControlDiv.index = 1;
-				$scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
-				var legendDiv = document.createElement('DIV');
-				var legend = new Legend(legendDiv);
-				legendDiv.index = 1;
-				$scope.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendDiv);
+				// var eventControlDiv = document.createElement('div');
+				// var eventControl = new EventControl(eventControlDiv);
+				// eventControlDiv.index = 1;
+				// $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+				// var legendDiv = document.createElement('DIV');
+				// var legend = new Legend(legendDiv);
+				// legendDiv.index = 1;
+				// $scope.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendDiv);
 			};
 
 			$scope.updateDate = function() {
@@ -185,78 +185,78 @@ angular
 				return moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
 			};
 
-			function Legend(controlDiv, map) {
-				// Set CSS styles for the DIV containing the control
-				// Setting padding to 5 px will offset the control
-				// from the edge of the map
-				controlDiv.style.padding = '5px';
+			// function Legend(controlDiv, map) {
+			// 	// Set CSS styles for the DIV containing the control
+			// 	// Setting padding to 5 px will offset the control
+			// 	// from the edge of the map
+			// 	controlDiv.style.padding = '5px';
 
-				// Set CSS for the control border
-				var controlUI = document.createElement('DIV');
-				controlUI.style.backgroundColor = 'white';
-				controlUI.style.borderStyle = 'solid';
-				controlUI.style.borderWidth = '1px';
-				controlUI.title = 'Legend';
-				controlDiv.appendChild(controlUI);
+			// 	// Set CSS for the control border
+			// 	var controlUI = document.createElement('DIV');
+			// 	controlUI.style.backgroundColor = 'white';
+			// 	controlUI.style.borderStyle = 'solid';
+			// 	controlUI.style.borderWidth = '1px';
+			// 	controlUI.title = 'Legend';
+			// 	controlDiv.appendChild(controlUI);
 
-				// Set CSS for the control text
-				var controlText = document.createElement('DIV');
-				controlText.style.fontFamily = 'Roboto';
-				controlText.style.fontSize = '16px';
-				controlText.style.paddingLeft = '4px';
-				controlText.style.paddingRight = '4px';
+			// 	// Set CSS for the control text
+			// 	var controlText = document.createElement('DIV');
+			// 	controlText.style.fontFamily = 'Roboto';
+			// 	controlText.style.fontSize = '16px';
+			// 	controlText.style.paddingLeft = '4px';
+			// 	controlText.style.paddingRight = '4px';
 
-				// Add the text
-				controlText.innerHTML = '<b>Legend</b><br />' +
-					'<img src="assets/src_dest_marker.png" /> Source/Destination Marker<br />' +
-					'<img src="assets/station_marker.png" /> Station<br />' +
-					'<img src="assets/people_marker.png" /> Client<br />'
-					controlUI.appendChild(controlText);
-			}
+			// 	// Add the text
+			// 	controlText.innerHTML = '<b>Legend</b><br />' +
+			// 		'<img src="assets/src_dest_marker.png" /> Source/Destination Marker<br />' +
+			// 		'<img src="assets/station_marker.png" /> Station<br />' +
+			// 		'<img src="assets/people_marker.png" /> Client<br />'
+			// 		controlUI.appendChild(controlText);
+			// }
 
-			function EventControl(controlDiv) {
+			// function EventControl(controlDiv) {
 
-				// // Set CSS for the control border
-				var controlUI = document.createElement('div');
-				controlUI.style.backgroundColor = '#fff';
-				controlUI.style.border = '2px solid #fff';
-				controlUI.style.borderRadius = '3px';
-				controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-				controlUI.style.cursor = 'pointer';
-				controlUI.style.marginBottom = '22px';
-				controlUI.style.textAlign = 'center';
-				controlDiv.appendChild(controlUI);
+			// 	// // Set CSS for the control border
+			// 	var controlUI = document.createElement('div');
+			// 	controlUI.style.backgroundColor = '#fff';
+			// 	controlUI.style.border = '2px solid #fff';
+			// 	controlUI.style.borderRadius = '3px';
+			// 	controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+			// 	controlUI.style.cursor = 'pointer';
+			// 	controlUI.style.marginBottom = '22px';
+			// 	controlUI.style.textAlign = 'center';
+			// 	controlDiv.appendChild(controlUI);
 
-				var checkbox = document.createElement('input');
-				checkbox.type = "checkbox";
-				checkbox.name = "eventCheckBox";
-				checkbox.value = "value";
-				checkbox.id = "eventCheckBox";
+			// 	var checkbox = document.createElement('input');
+			// 	checkbox.type = "checkbox";
+			// 	checkbox.name = "eventCheckBox";
+			// 	checkbox.value = "value";
+			// 	checkbox.id = "eventCheckBox";
 
-				var label = document.createElement('label')
-				label.style.fontFamily = 'Roboto';
-				label.style.fontSize = '20px';
-				label.style.paddingLeft = '5px';
-				label.style.paddingRight = '5px';
-				label.htmlFor = "id";
-				label.id = "eventLabel";
-				label.name = "eventLabel";
-				label.innerHTML = 'Show Events';
+			// 	var label = document.createElement('label')
+			// 	label.style.fontFamily = 'Roboto';
+			// 	label.style.fontSize = '20px';
+			// 	label.style.paddingLeft = '5px';
+			// 	label.style.paddingRight = '5px';
+			// 	label.htmlFor = "id";
+			// 	label.id = "eventLabel";
+			// 	label.name = "eventLabel";
+			// 	label.innerHTML = 'Show Events';
 
-				controlUI.appendChild(checkbox);
-				controlUI.appendChild(label);
+			// 	controlUI.appendChild(checkbox);
+			// 	controlUI.appendChild(label);
 
-				google.maps.event.addDomListener(checkbox, 'change', function() {
-					if ($('#eventCheckBox').prop("checked")) {
-						
-						document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
-					} else {
+			// 	google.maps.event.addDomListener(checkbox, 'change', function() {
+			// 		if ($('#eventCheckBox').prop("checked")) {
 
-						document.getElementById('eventLabel').innerHTML = 'Show Events';
-					}
-				});
+			// 			document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
+			// 		} else {
 
-			}
+			// 			document.getElementById('eventLabel').innerHTML = 'Show Events';
+			// 		}
+			// 	});
+
+			// }
 
 			function createMarker(map_center, map_address,
 				marker_type) {
@@ -677,7 +677,6 @@ angular
 
 											for (var addressIndex = 0; addressIndex < dataObj[userIndex].known_addresses.length; addressIndex++) {
 												var current_user_address = dataObj[userIndex].known_addresses[addressIndex];
-												console.log(dataObj[userIndex].known_addresses.length);
 												for (var circleIndex = 0; circleIndex < $scope.circles.length; circleIndex++) {
 
 
@@ -694,12 +693,10 @@ angular
 															map_center,
 															sname + " - " + current_user_address.address_type,
 															"suggestion");
-														console.log('true ' + map_center + " " + current_user_address.address_type);
 													}
 												}
 											}
 											if (addressArray.length > 0) {
-												console.log(addressArray);
 												$scope.suggestionList
 													.push({
 														name: sname,

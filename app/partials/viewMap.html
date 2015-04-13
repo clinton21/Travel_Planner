@@ -60,10 +60,10 @@
 			<div>
 				<div id="loading" ng-if="loadingStatus"><img src="assets/loading.gif"></div>
 				<div>
-					<div>
+					<!-- <div>
 						<p class="results">Select Date</p>
 						<slider ng-model="searchDate" min="0" step="1" max="30" value="0" on-stop-slide="updateDate()" formater="formaterFn"> </slider>
-					</div>
+					</div> -->
 					<div id="map-canvas"></div>
 				</div>
 				<div>
@@ -75,19 +75,45 @@
 						<table class="table table-striped ">
 							<thead>
 								<tr>
-									<td>Sr. no</td>
-									<td>ID</td>
-									<td>Name</td>
-									<td>Address</td>
-									<td>Post Code</td>
+									<td>
+										Sr. no
+										<input type="hidden" ng-model="search.$">
+									</td>
+									<td>
+										ID
+										<br>
+										<input ng-model="search.id" class="controls_mod">
+									</td>
+									<td>
+										Name
+										<br>
+										<input ng-model="search.name" class="controls_mod">
+									</td>
+									<td>
+										Address
+										<br>
+										<input ng-model="search.addresses.address_type" class="controls_mod">
+									</td>
+									<td>
+										Post Code
+										<br>
+										<input ng-model="search.postCode" class="controls_mod">
+									</td>
+									<!-- <td>Star Rating</td>
+									<td>Client type</td>
+									<td>Next Meeting(in weeks)</td>
+									<td>Contracted annual meetings</td>
+									<td>Miles from start destination</td>
+									<td>Previous meeting</td>
+									<td>Region</td> -->
 								</tr>
 							</thead>
-							<tr ng-repeat="suggestion in suggestionList | orderBy:'id' ">
+							<tr ng-repeat="suggestion in suggestionList | filter:search:strict | orderBy:'id' ">
 								<td>{{$index+1}}</td>
 								<td>{{suggestion.id}}</td>
 								<td>{{suggestion.name}}</td>
 								<td>
-									<div ng-repeat="address in suggestion.addresses">
+									<div ng-repeat="address in suggestion.addresses | filter:search.addresses.address_type ">
 										{{address.address_type}}
 										<br>
 									</div>
