@@ -278,6 +278,7 @@ angular
                     if ($('#eventCheckBox').prop("checked")) {
 
                         document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
+                        showEvents();
                     } else {
 
                         document.getElementById('eventLabel').innerHTML = 'Show Events';
@@ -287,7 +288,12 @@ angular
             }
 
             function showEvents() {
-
+            	var Events=userData.getEventData();
+            	Events.then(function(eventData){
+            		console.log(eventData);
+            	},function(error){
+            		console.log('Error Showing Events');
+            	});
             }
 
             function createMarker(map_center, map_address,
@@ -725,8 +731,6 @@ angular
                     for (var addressIndex = 0; addressIndex < dataObj[userIndex].known_addresses.length; addressIndex++) {
                         var current_user_address = dataObj[userIndex].known_addresses[addressIndex];
                         for (var circleIndex = 0; circleIndex < $scope.circles.length; circleIndex++) {
-
-
                             var bounds = $scope.circles[circleIndex].getBounds();
                             var map_center = new google.maps.LatLng(
                                 Number(current_user_address.lat),
