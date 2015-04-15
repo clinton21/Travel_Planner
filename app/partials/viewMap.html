@@ -1,137 +1,141 @@
 <div ng-init="init()">
-    <div class="row">
-        <div class="col-md-3">
-            <div>
-                <div>
-                    <p class="results">Origin Address</p>
-                    <input id="origin-input" class="controls_mod" type="text" placeholder="Enter Origin Address" name="address" ng-model="origin_address">
-                </div>
-                <br>
-                <div>
-                    <input type="checkbox" ng-model="showDestination" ng-change="resetDestination()" />
-                    <label class="results">Select Destination</label>
-                </div>
-                <br>
-                <div ng-show="showDestination">
-                    <div>
-                        <p class="results">Destination Address</p>
-                        <input id="destination-input" class="controls_mod" type="text" placeholder="Enter Destination Address" name="address" ng-model="destination_address">
-                    </div>
-                    <br>
-                    <div>
-                        <p class="results">Transportation Mode</p>
-                        <input type="radio" ng-model="travelMode" value="car"><img src="assets/car.png" style="height: 32px; width: 32px">
-                        <input type="radio" ng-model="travelMode" value="subway"><img src="assets/train.png" style="height: 32px; width: 30px">
-                    </div>
-                </div>
-                <br>
-                <div ng-show="(showDestination?origin_address.length>0 && destination_address.length>0 && travelMode.length>0:origin_address.length>0)">
-                    <button class="btn bg-primary" ng-click="calcRoute()" style="width: 100%">Find Route</button>
-                </div>
+	<div class="row">
 
-            </div>
-            <div id="panel-mod" ng-show="routesList.length > 0">
-                <div>
-                    <p class="results">
-                        Source: {{origin_address}}
-                        <br> Destination: {{destination_address}}
-                        <br> Mode: {{tMode}}
-                    </p>
-                </div>
-                <div>
-                    <accordion ng-repeat="route in routesList" class="list-group">
-                        <accordion-group>
-                            <!-- <p style="color:{{colors[route.routeIndexValue]}}">Route {{route.routeIndexValue + 1 }}</p> -->
-                            <accordion-heading>
-                                <p style="background-color: {{route.routeColor}}">Route {{$index + 1 }}
-                                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-                                </p>
-                            </accordion-heading>
-                            Distance: {{route.distanceOfRoute}}</br> Time: {{route.timeOfRoute}}
-                            <br>
-                            <br> Route to be taken
-                            <div class="row">
-                                <ul ng-repeat="info in route.routeInfo">
-                                    <li><img ng-src="{{info.vechIcon}}"> {{info.travelInfo | htmlToPlaintext}}</li>
-                                </ul>
-                            </div>
-                            <button class="btn btn-default" ng-click="sendEndLocations($index)">Select Route
-                            </button>
-                        </accordion-group>
-                    </accordion>
-                </div>
-            </div>
-        </div>
+		<div class="col-md-3">
+			<div>
+				<div>
+					<p class="results">Origin Address</p>
+					<input id="origin-input" class="controls_mod" type="text" placeholder="Enter Origin Address" name="address" ng-model="origin_address">
+				</div>
+				<br>
+				<div>
+					<input type="checkbox" ng-model="showDestination" ng-change="resetDestination()" />
+					<label class="results">Select Destination</label>
+				</div>
+				<br>
+				<div ng-show="showDestination">
+					<div>
+						<p class="results">Destination Address</p>
+						<input id="destination-input" class="controls_mod" type="text" placeholder="Enter Destination Address" name="address" ng-model="destination_address">
+					</div>
+					<br>
+					<div>
+						<p class="results">Transportation Mode</p>
+						<input type="radio" ng-model="travelMode" value="Car"><img src="assets/_car.png" style="height: 32px; width: 32px">
+						<input type="radio" ng-model="travelMode" value="Subway"><img src="assets/_subway.png" style="height: 32px; width: 30px">
+						<input type="radio" ng-model="travelMode" value="Walking"><img src="assets/_walking.png" style="height: 32px; width: 30px">
+					</div>
+				</div>
+				<br>
+				<div ng-show="(showDestination?origin_address.length>0 && destination_address.length>0 && travelMode.length>0:origin_address.length>0)">
+					<button class="btn bg-primary" ng-click="calcRoute()" style="width: 100%">Find Route</button>
+				</div>
 
-        <div class="col-md-9">
-            <div>
-                <div id="loading" ng-if="loadingStatus"><img src="assets/loading.gif"></div>
-                <div>
-                    <!-- <div>
+			</div>
+			<div id="panel-mod" ng-show="routesList.length > 0">
+				<div>
+					<p class="results">
+						Source: {{origin_address}}
+						<br> Destination: {{destination_address}}
+						<br> Mode: {{tMode}}
+					</p>
+				</div>
+				<div>
+					<accordion ng-repeat="route in routesList" class="list-group">
+						<accordion-group>
+							<!-- <p style="color:{{colors[route.routeIndexValue]}}">Route {{route.routeIndexValue + 1 }}</p> -->
+							<accordion-heading>
+								<p style="background-color: {{route.routeColor}}">Route {{$index + 1 }}
+									<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+								</p>
+							</accordion-heading>
+							Distance: {{route.distanceOfRoute}}</br> Time: {{route.timeOfRoute}}
+							<br>
+							<br> Route to be taken
+							<div class="row">
+								<ul ng-repeat="info in route.routeInfo">
+									<li><img ng-src="{{info.vechIcon}}"> {{info.travelInfo | htmlToPlaintext}}</li>
+								</ul>
+							</div>
+							<button class="btn btn-default" ng-click="sendEndLocations($index)">Select Route
+							</button>
+						</accordion-group>
+					</accordion>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9">
+			<div>
+				<div id="loading" ng-if="loadingStatus"><img src="assets/loading.gif"></div>
+				<div>
+					<!-- <div>
 						<p class="results">Select Date</p>
 						<slider ng-model="searchDate" min="0" step="1" max="30" value="0" on-stop-slide="updateDate()" formater="formaterFn"> </slider>
 					</div> -->
-                    <div id="map-canvas"></div>
-                </div>
-                <div>
-                    <div>
-                        <p class="results">Search Radius (Kms)</p>
-                        <slider ng-model="searchRadius" min="1" step="1" max="5" value="2" on-stop-slide="sendEndLocations(tempIndex)"> </slider>
-                    </div>
-                    <div ng-show="suggestionList.length>0">
-                        <table class="table table-striped ">
-                            <thead>
-                                <tr>
-                                    <td>
-                                        Sr. no
-                                        <input type="hidden" ng-model="search.$">
-                                    </td>
-                                    <td>
-                                        ID
-                                        <br>
-                                        <input ng-model="search.id" class="controls_mod">
-                                    </td>
-                                    <td>
-                                        Name
-                                        <br>
-                                        <input ng-model="search.name" class="controls_mod">
-                                    </td>
-                                    <td>
-                                        Address
-                                        <br>
-                                        <input ng-model="search.addresses.address_type" class="controls_mod">
-                                    </td>
-                                    <td>
-                                        Post Code
-                                        <br>
-                                        <input ng-model="search.postCode" class="controls_mod">
-                                    </td>
-                                    <!-- <td>Star Rating</td>
+					<div id="map-canvas"></div>
+				</div>
+				<div>
+					<div>
+						<p class="results">Search Radius (Kms)</p>
+						<slider ng-model="searchRadius" min="1" step="1" max="5" value="2" on-stop-slide="sendEndLocations(tempIndex)"> </slider>
+					</div>
+					<div ng-show="suggestionList.length>0">
+						<table class="table table-striped ">
+							<thead>
+								<tr>
+									<td>
+										Sr. no
+										<!-- <input type="hidden" ng-model="search.$"> -->
+									</td>
+									<td>
+										ID
+										<br>
+										<!-- <input ng-model="search.id" class="controls_mod"> -->
+									</td>
+									<td>
+										Name
+										<br>
+										<!-- <input ng-model="search.name" class="controls_mod"> -->
+									</td>
+									<td>
+										Address
+										<br>
+										<!-- <input ng-model="search.addresses.address_type" class="controls_mod"> -->
+									</td>
+									<td>
+										Post Code
+										<br>
+										<!-- <input ng-model="search.postCode" class="controls_mod"> -->
+									</td>
+									<!-- <td>Star Rating</td>
 									<td>Client type</td>
 									<td>Next Meeting(in weeks)</td>
 									<td>Contracted annual meetings</td>
 									<td>Miles from start destination</td>
 									<td>Previous meeting</td>
 									<td>Region</td> -->
-                                </tr>
-                            </thead>
-                            <tr ng-repeat="suggestion in suggestionList | filter:search:strict | orderBy:'id' ">
-                                <td>{{$index+1}}</td>
-                                <td>{{suggestion.id}}</td>
-                                <td>{{suggestion.name}}</td>
-                                <td>
-                                    <div ng-repeat="address in suggestion.addresses | filter:search.addresses.address_type ">
-                                        {{address.address_type}}
-                                        <br>
-                                    </div>
-                                </td>
-                                <td>{{suggestion.postCode}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div ng-hide="suggestionList.length>0">
-                        <h2>{{errorMsg}}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
+								</tr>
+							</thead>
+							<tr ng-repeat="suggestion in suggestionList | filter:search:strict | orderBy:'id' ">
+								<td>{{$index+1}}</td>
+								<td>{{suggestion.id}}</td>
+								<td>{{suggestion.name}}</td>
+								<td>
+									<div ng-repeat="address in suggestion.addresses | filter:search.addresses.address_type ">
+										{{address.address_type}}
+										<br>
+									</div>
+								</td>
+								<td>{{suggestion.postCode}}</td>
+							</tr>
+						</table>
+					</div>
+					<div ng-hide="suggestionList.length>0">
+						<h2>{{errorMsg}}</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

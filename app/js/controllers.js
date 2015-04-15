@@ -210,7 +210,7 @@ angular
 			$scope.resetDestination = function() {
 				if (!$scope.showDestination) {
 					$scope.destination_address = null;
-					$scope.travelMode = null;
+					$scope.travelMode = false;
 				}
 			}
 
@@ -416,7 +416,7 @@ angular
 					var end = $scope.destination_address;
 					var request;
 					$scope.tMode = $scope.travelMode;
-					if ($scope.tMode === 'subway') {
+					if ($scope.tMode === 'Subway') {
 						request = {
 							origin: start,
 							destination: end,
@@ -427,12 +427,20 @@ angular
 								modes: [google.maps.TransitMode.SUBWAY],
 							},
 						};
-					} else if ($scope.tMode === 'car') {
+					} else if ($scope.tMode === 'Car') {
 						request = {
 							origin: start,
 							destination: end,
 							optimizeWaypoints: true,
 							travelMode: google.maps.TravelMode.DRIVING,
+							provideRouteAlternatives: true,
+						};
+					} else if ($scope.tMode === 'Walking') {
+						request = {
+							origin: start,
+							destination: end,
+							optimizeWaypoints: true,
+							travelMode: google.maps.TravelMode.WALKING,
 							provideRouteAlternatives: true,
 						};
 					}
@@ -622,40 +630,37 @@ angular
 
 			}
 
+			function renderCircle(center_point, single_point_flag) {
+				var c = new google.maps.Circle({
+					strokeColor: '#000000',
+					strokeOpacity: 0.8,
+					strokeWeight: 2,
+					fillColor: "#FFB733",
+					fillOpacity: 0.20,
+					map: $scope.map,
+					center: center_point,
+					radius: ($scope.searchRadius * 1000)
+				});
+				$scope.circles.push(c);
+				if (single_point_flag == -1) {
+					$scope.map.fitBounds(c.getBounds());
+				}
+
+			}
 
 			function createCircles(routeIndex) {
 				q = $q.defer();
 				if (routeIndex != -1) {
-					if ($scope.tMode === 'subway') {
+					if ($scope.tMode === 'Subway') {
 						for (var counter = 0; counter < $scope.routesList[routeIndex].routeInfo.length; counter++) {
 							$scope.locData[counter] = $scope.routesList[routeIndex].routeInfo[counter].end_location;
 							if (typeof $scope.locData[counter] !== 'undefined') {
-								var c = new google.maps.Circle({
-									strokeColor: '#000000',
-									strokeOpacity: 0.8,
-									strokeWeight: 2,
-									fillColor: "#EBB11A",
-									fillOpacity: 0.20,
-									map: $scope.map,
-									center: $scope.locData[counter],
-									radius: ($scope.searchRadius * 1000)
-								});
-								$scope.circles.push(c);
-								q.resolve();
+								renderCircle($scope.locData[counter], 1);
 							}
 						}
-					} else if ($scope.tMode === 'car') {
-						var c = new google.maps.Circle({
-							strokeColor: '#000000',
-							strokeOpacity: 0.8,
-							strokeWeight: 2,
-							fillColor: "#EBB11A",
-							fillOpacity: 0.20,
-							map: $scope.map,
-							center: $scope.routeCallbackData.routes[0].legs[0].end_location,
-							radius: ($scope.searchRadius * 1000)
-						});
-						$scope.circles.push(c);
+						q.resolve();
+					} else if ($scope.tMode === 'Car' || $scope.tMode === 'Walking') {
+						renderCircle($scope.routeCallbackData.routes[0].legs[0].end_location, 1);
 						var tempDist = 0;
 
 
@@ -663,36 +668,15 @@ angular
 							if (tempDist < 2000) {
 								tempDist += $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
 							} else if (tempDist > 2000) {
-								var c = new google.maps.Circle({
-									strokeColor: '#000000',
-									strokeOpacity: 0.8,
-									strokeWeight: 2,
-									fillColor: "#EBB11A",
-									fillOpacity: 0.20,
-									map: $scope.map,
-									center: $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i - 1].end_location,
-									radius: ($scope.searchRadius * 1000)
-								});
-								$scope.circles.push(c);
+								renderCircle($scope.routeCallbackData.routes[routeIndex].legs[0].steps[i - 1].end_location, 1);
 								tempDist = $scope.routeCallbackData.routes[routeIndex].legs[0].steps[i].distance.value;
 							}
 						}
 						q.resolve();
 					}
 				} else if (routeIndex == -1) {
+					renderCircle($scope.geoPoint, -1);
 
-					var c = new google.maps.Circle({
-						strokeColor: '#000000',
-						strokeOpacity: 0.8,
-						strokeWeight: 2,
-						fillColor: "#EBB11A",
-						fillOpacity: 0.20,
-						map: $scope.map,
-						center: $scope.geoPoint,
-						radius: ($scope.searchRadius * 1000)
-					});
-					$scope.circles.push(c);
-					$scope.map.fitBounds(c.getBounds());
 					q.resolve();
 
 				} else {
@@ -858,7 +842,7 @@ angular
 													'failure loading list',
 													errorPayload);
 										});
-								if ($scope.tMode === 'subway' && (!_.isUndefined($scope.destination_address) || !_.isNull($scope.destination_address))) {
+								if ($scope.tMode === 'Subway' && (!_.isUndefined($scope.destination_address) || !_.isNull($scope.destination_address))) {
 									findStations(routeIndex);
 								}
 
