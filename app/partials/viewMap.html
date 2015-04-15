@@ -43,7 +43,6 @@
 				<div>
 					<accordion ng-repeat="route in routesList" class="list-group">
 						<accordion-group>
-							<!-- <p style="color:{{colors[route.routeIndexValue]}}">Route {{route.routeIndexValue + 1 }}</p> -->
 							<accordion-heading>
 								<p style="background-color: {{route.routeColor}}">Route {{$index + 1 }}
 									<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
@@ -69,10 +68,10 @@
 			<div>
 				<div id="loading" ng-if="loadingStatus"><img src="assets/loading.gif"></div>
 				<div>
-					<!-- <div>
+					<div>
 						<p class="results">Select Date</p>
 						<slider ng-model="searchDate" min="0" step="1" max="30" value="0" on-stop-slide="updateDate()" formater="formaterFn"> </slider>
-					</div> -->
+					</div>
 					<div id="map-canvas"></div>
 				</div>
 				<div>
@@ -103,11 +102,11 @@
 										<br>
 										<!-- <input ng-model="search.addresses.address_type" class="controls_mod"> -->
 									</td>
-									<td>
+									<!-- <td>
 										Post Code
 										<br>
-										<!-- <input ng-model="search.postCode" class="controls_mod"> -->
-									</td>
+										<input ng-model="search.postCode" class="controls_mod">
+									</td> -->
 									<!-- <td>Star Rating</td>
 									<td>Client type</td>
 									<td>Next Meeting(in weeks)</td>
@@ -127,7 +126,7 @@
 										<br>
 									</div>
 								</td>
-								<td>{{suggestion.postCode}}</td>
+								<!-- <td>{{suggestion.postCode}}</td> -->
 							</tr>
 						</table>
 					</div>
