@@ -192,7 +192,7 @@ angular
 				showEvents();
 			}
 			$scope.formaterFn = function(value) {
-				return moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
+				return moment().add($scope.searchDate, 'd').format("MMM DD YYYY");
 			};
 
 			function geoCodeAddress() {
@@ -317,9 +317,9 @@ angular
 					eventData = eventData.data;
 					for (var index = 0; index < eventData.length; index++) {
 						var meeting_date = moment(eventData[index].meeting_date, 'D/MM/YYYY');
-						var flag = moment(meeting_date, 'D/MM/YYYY').isBetween(moment($scope.startDate, 'D/MM/YYYY'), moment($scope.endDate, 'D/MM/YYYY'));
+						var flag = moment(meeting_date, 'D/MM/YYYY').isBetween(moment($scope.startDate, 'D/MM/YYYY').subtract(1, 'd'), moment($scope.endDate, 'D/MM/YYYY').subtract(1, 'd'));
 						if (flag) {
-							meeting_date = moment(meeting_date, 'D/MM/YYYY').format('MM-DD-YYYY');
+							meeting_date = moment(meeting_date, 'D/MM/YYYY').format('MMM DD YYYY');
 							var map_center = new google.maps.LatLng(
 								Number(eventData[index].meeting_location.lat),
 								Number(eventData[index].meeting_location.lng));
@@ -331,7 +331,8 @@ angular
 								date: meeting_date,
 								address: address,
 								participants: meeting_participants,
-								time: time
+								time: time,
+								center:map_center
 							});
 							createMarker(map_center, address, 'event');
 						}
@@ -398,8 +399,9 @@ angular
 
 			};
 
-			function setMapCenter(center_point) {
+			$scope.setMapCenter=function(center_point) {
 				$scope.map.setCenter(center_point);
+				$scope.map.setZoom(16);
 			};
 
 
@@ -892,6 +894,9 @@ angular
 			$scope.sendEndLocations = function(routeIndex) {
 				if (_.isUndefined(routeIndex)) {
 					routeIndex = -1;
+				}
+				if(_.isUndefined($scope.origin_address) || _.isNull($scope.origin_address)){
+					return false;
 				}
 				$scope.tempIndex = routeIndex;
 				$scope.loadingStatus = true;
