@@ -102,11 +102,11 @@
 										<br>
 										<!-- <input ng-model="search.addresses.address_type" class="controls_mod"> -->
 									</td>
-									<!-- <td>
+									<td>
 										Post Code
 										<br>
-										<input ng-model="search.postCode" class="controls_mod">
-									</td> -->
+										<!-- <input ng-model="search.postCode" class="controls_mod"> -->
+									</td>
 									<!-- <td>Star Rating</td>
 									<td>Client type</td>
 									<td>Next Meeting(in weeks)</td>
@@ -126,7 +126,12 @@
 										<br>
 									</div>
 								</td>
-								<!-- <td>{{suggestion.postCode}}</td> -->
+								<td>
+									<div ng-repeat="_pincode in suggestion.pincodes ">
+										{{_pincode.pincode}}
+										<br>
+									</div>
+								</td>
 							</tr>
 						</table>
 					</div>
