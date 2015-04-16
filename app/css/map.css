@@ -79,3 +79,9 @@
     justify-content: center;
     display:flex
 }
+caption { 
+    display: table-caption;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 30px;
+}

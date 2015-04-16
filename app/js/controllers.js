@@ -16,7 +16,7 @@ angular
 
 			var LatLong = new google.maps.LatLng(51.5072,
 				0.1275);
-			$scope.markers = [];
+			var markers = [];
 			$scope.colors = ['Red', 'Orange', 'Yellow',
 				'Green', 'Blue', 'Indigo', 'Violet'
 			];
@@ -27,8 +27,8 @@ angular
 			$scope.stationData = [];
 			$scope.suggestionList = [];
 			$scope.polyLine = [];
-			$scope.circles = [];
-			$scope.srcDestMarkers = [];
+			var circles = [];
+			var srcDestMarkers = [];
 			$scope.tMode;
 			$scope.loadingStatus = false;
 			$scope.searchRadius = 2;
@@ -36,6 +36,11 @@ angular
 			$scope.sliderDate;
 			$scope.errorMsg;
 			$scope.geoPoint;
+			var cicle_data = {};
+			$scope.eventList = [];
+			$scope.startDate, $scope.endDate;
+			$scope.sliderFlag = false;
+
 
 
 			$scope.init = function() {
@@ -177,11 +182,14 @@ angular
 				var legendDiv = document.createElement('DIV');
 				var legend = new Legend(legendDiv);
 				legendDiv.index = 1;
-				$scope.map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legendDiv);
+				$scope.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legendDiv);
 			};
 
 			$scope.updateDate = function() {
 				$scope.sliderDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
+				$scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
+				$scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
+				showEvents();
 			}
 			$scope.formaterFn = function(value) {
 				return moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
@@ -236,9 +244,10 @@ angular
 
 				// Add the text
 				controlText.innerHTML = '<b>Legend</b><br />' +
-					'<img src="assets/src_dest_marker.png" /> Source/Destination Marker<br />' +
-					'<img src="assets/station_marker.png" /> Station<br />' +
-					'<img src="assets/people_marker.png" /> Client<br />'
+					'<img src="assets/src_dest_marker.png" /> Source/Destination Marker ' +
+					'<img src="assets/station_marker.png" /> Station ' +
+					'<img src="assets/people_marker.png" /> Client ' +
+					'<img src="assets/event_marker.png" /> Event '
 				controlUI.appendChild(controlText);
 			}
 
@@ -276,21 +285,58 @@ angular
 
 				google.maps.event.addDomListener(checkbox, 'change', function() {
 					if ($('#eventCheckBox').prop("checked")) {
-
 						document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
+						$scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
+						$scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
+						$scope.sliderFlag = true;
 						showEvents();
-					} else {
 
+					} else {
+						emptyEventList()
+						removeMarkers();
+						$scope.sliderFlag = false;
 						document.getElementById('eventLabel').innerHTML = 'Show Events';
+						$scope.$apply();
 					}
 				});
 
 			}
 
+			function emptyEventList() {
+				$scope.eventList = [];
+				for (var i = 0; i < $scope.eventList.length; i++) {
+					$scope.eventList.splice(i, 1);
+				}
+			}
+
 			function showEvents() {
+				emptyEventList()
+				removeMarkers();
 				var Events = userData.getEventData();
 				Events.then(function(eventData) {
-					console.log(eventData);
+					eventData = eventData.data;
+					for (var index = 0; index < eventData.length; index++) {
+						var meeting_date = moment(eventData[index].meeting_date, 'D/MM/YYYY');
+						var flag = moment(meeting_date, 'D/MM/YYYY').isBetween(moment($scope.startDate, 'D/MM/YYYY'), moment($scope.endDate, 'D/MM/YYYY'));
+						if (flag) {
+							meeting_date = moment(meeting_date, 'D/MM/YYYY').format('MM-DD-YYYY');
+							var map_center = new google.maps.LatLng(
+								Number(eventData[index].meeting_location.lat),
+								Number(eventData[index].meeting_location.lng));
+							var address = eventData[index].meeting_location_humanized;
+							var meeting_participants = eventData[index].meeting_participants;
+
+							var time = eventData[index].meeting_time;
+							$scope.eventList.push({
+								date: meeting_date,
+								address: address,
+								participants: meeting_participants,
+								time: time
+							});
+							createMarker(map_center, address, 'event');
+						}
+
+					}
 				}, function(error) {
 					console.log('Error Showing Events');
 				});
@@ -314,6 +360,11 @@ angular
 				} else if (marker_type === "suggestion") {
 					img = {
 						url: 'assets/people_marker.png',
+						origin: new google.maps.Point(0, 0),
+					};
+				} else if (marker_type === "event") {
+					img = {
+						url: 'assets/event_marker.png',
 						origin: new google.maps.Point(0, 0),
 					};
 				}
@@ -340,9 +391,9 @@ angular
 						infowindow.close();
 					});
 				if (marker_type === "src_dest") {
-					$scope.srcDestMarkers.push(marker);
+					srcDestMarkers.push(marker);
 				} else {
-					$scope.markers.push(marker);
+					markers.push(marker);
 				}
 
 			};
@@ -403,10 +454,10 @@ angular
 				removeMarkers();
 				removePolyLines();
 				removeCircles();
-				for (var i = 0; i < $scope.srcDestMarkers.length; i++) {
-					$scope.srcDestMarkers[i].setMap(null);
+				for (var i = 0; i < srcDestMarkers.length; i++) {
+					srcDestMarkers[i].setMap(null);
 				}
-				$scope.srcDestMarkers.length = 0;
+				srcDestMarkers.length = 0;
 				$scope.routesList.length = 0;
 				$scope.suggestionList.length = 0;
 
@@ -491,16 +542,16 @@ angular
 			};
 
 			function setMarkers() {
-				for (var i = 0; i < $scope.markers.length; i++) {
-					$scope.markers[i].setMap($scope.map);
+				for (var i = 0; i < markers.length; i++) {
+					markers[i].setMap($scope.map);
 				}
 			};
 
 			function removeMarkers() {
-				for (var i = 0; i < $scope.markers.length; i++) {
-					$scope.markers[i].setMap(null);
+				for (var i = 0; i < markers.length; i++) {
+					markers[i].setMap(null);
 				}
-				$scope.markers.length = 0;
+				markers.length = 0;
 			};
 
 			function createPolyRoute(steps, i, currentRoute) {
@@ -612,9 +663,9 @@ angular
 
 			};
 			removeCircles = function() {
-				if ($scope.circles.length > 0) {
-					for (var i = 0; i < $scope.circles.length; i++) {
-						$scope.circles[i].setMap(null);
+				if (circles.length > 0) {
+					for (var i = 0; i < circles.length; i++) {
+						circles[i].setMap(null);
 					}
 				}
 			};
@@ -648,7 +699,7 @@ angular
 					center: center_point,
 					radius: ($scope.searchRadius * 1000)
 				});
-				$scope.circles.push(c);
+				circles.push(c);
 				if (single_point_flag == -1) {
 					$scope.map.fitBounds(c.getBounds());
 				}
@@ -657,23 +708,22 @@ angular
 
 			function create_circle_data() {
 				q = $q.defer();
-				$scope.cicle_data = {};
-				$scope.cicle_data.length = 0;
-				$scope.cicle_data = {
+				cicle_data.length = 0;
+				cicle_data = {
 					radius: $scope.searchRadius * 1000,
 					filters: {
 						firm_id: 205
 					},
 					points: []
 				};
-				for (var i = 0; i < $scope.circles.length; i++) {
-					var center = $scope.circles[i].center;
-					$scope.cicle_data.points.push({
+				for (var i = 0; i < circles.length; i++) {
+					var center = circles[i].center;
+					cicle_data.points.push({
 						lat: center.lat(),
 						lng: center.lng()
 					});
 				}
-				console.log($scope.cicle_data);
+				console.log(cicle_data);
 				q.resolve();
 				return q.promise;
 			}
@@ -729,7 +779,7 @@ angular
 				for (var userIndex = 0; userIndex < dataObj.length; userIndex++) {
 					var addressArray = [];
 					addressArray.length = 0;
-					var pincodeArray =[];
+					var pincodeArray = [];
 					pincodeArray.length = 0;
 					var sname;
 
@@ -744,7 +794,7 @@ angular
 								address_type: current_user_address.address_type + " - " + current_user_address.address_humanized
 							});
 							pincodeArray.push({
-								pincode:current_user_address.pincode
+								pincode: current_user_address.pincode
 							});
 							sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
 							createMarker(
@@ -848,13 +898,13 @@ angular
 				$scope.locData = [];
 				removeMarkers();
 				removeCircles();
-				$scope.circles.length = 0;
+				circles.length = 0;
 				$scope.suggestionList.length = 0;
 				$scope.suggestionList = [];
 				$scope.locData.length = 0;
 				createCircles(routeIndex).then(function() {
 					var getData = userData
-						.getUserData($scope.cicle_data);
+						.getUserData(cicle_data);
 					getData
 						.then(
 							function(

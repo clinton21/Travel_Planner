@@ -68,9 +68,10 @@
 			<div>
 				<div id="loading" ng-if="loadingStatus"><img src="assets/loading.gif"></div>
 				<div>
-					<div>
+					<div ng-show="sliderFlag">
 						<p class="results">Select Date</p>
 						<slider ng-model="searchDate" min="0" step="1" max="30" value="0" on-stop-slide="updateDate()" formater="formaterFn"> </slider>
+						<p class="results">Start Date:{{startDate}} End Date:{{endDate}}</p>
 					</div>
 					<div id="map-canvas"></div>
 				</div>
@@ -81,6 +82,7 @@
 					</div>
 					<div ng-show="suggestionList.length>0">
 						<table class="table table-striped ">
+						<caption style="display: table-caption;text-align: center;">Clients</caption>
 							<thead>
 								<tr>
 									<td>
@@ -137,6 +139,37 @@
 					</div>
 					<div ng-hide="suggestionList.length>0">
 						<h2>{{errorMsg}}</h2>
+					</div>
+					<div ng-show="eventList.length>0">
+						<table class="table table-striped ">
+						<caption >Events</caption>
+							<thead>
+								<tr>
+									<td>Meeting Date</td>
+									<td>Meeting Participants</td>
+									<td>Meeting Location</td>
+									<td>Meeting Time</td>
+								</tr>
+							</thead>
+
+							<tr ng-repeat="event in eventList |orderBy:'date'">
+								<td>
+									{{event.date}}
+								</td>
+								<td>
+									<div ng-repeat="participant in event.participants">
+										{{participant.name}}
+										<br>
+									</div>
+								</td>
+								<td>
+									{{event.address}}
+								</td>
+								<td>
+									{{event.time}}
+								</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</div>

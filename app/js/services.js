@@ -7,7 +7,6 @@ angular.module('mapApp.services', [])
 		var q = $q.defer();
 		$http.get("http://awmphoenix.com/api/v1/phoenix-users/addresses?" + $.param(circle_data))
 			.then(function(data) {
-				console.log(data);
 				q.resolve(data);
 			}, function(error) {
 				console.log('Error fetching user Data');
