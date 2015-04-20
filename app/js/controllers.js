@@ -6,20 +6,22 @@ angular
 
 .controller(
 	'mapController', [
+		'$rootScope',
 		'$scope',
 		'$http',
 		'$stateParams',
 		'x2js',
 		'userData',
 		'$q',
-		function($scope, $http, $stateParams, x2js, userData, $q) {
+		function($rootScope, $scope, $http, $stateParams, x2js, userData, $q) {
 
 			var LatLong = new google.maps.LatLng(51.5072,
 				0.1275);
 			var markers = [];
 			$scope.colors = ['Red', 'Orange', 'Yellow',
-				'Green', 'Blue', 'Indigo', 'Violet'
+				'Green', 'Blue', 'Indigo', 'Violet', '#308FE3'
 			];
+			$rootScope.infoFrom = 'file';
 			$scope.routesList = [];
 			$scope.routeCallbackData;
 			$scope.polyLineData = [];
@@ -40,6 +42,15 @@ angular
 			$scope.eventList = [];
 			$scope.startDate, $scope.endDate;
 			$scope.sliderFlag = false;
+			$scope.BASEURL = BASEURL;
+			var rendererOptions = {
+				draggable: true,
+				suppressMarkers: true
+			};
+
+			var directionsDisplay;
+			var directionsService;
+			$scope.modRoute = false;
 
 
 
@@ -175,10 +186,10 @@ angular
 				$scope.map = new google.maps.Map(document
 					.getElementById('map-canvas'),
 					mapOptions);
-				var eventControlDiv = document.createElement('div');
-				var eventControl = new EventControl(eventControlDiv);
-				eventControlDiv.index = 1;
-				$scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+				// var eventControlDiv = document.createElement('div');
+				// var eventControl = new EventControl(eventControlDiv);
+				// eventControlDiv.index = 1;
+				// $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
 				var legendDiv = document.createElement('DIV');
 				var legend = new Legend(legendDiv);
 				legendDiv.index = 1;
@@ -244,63 +255,62 @@ angular
 
 				// Add the text
 				controlText.innerHTML = '<b>Legend</b><br />' +
-					'<img src="assets/src_dest_marker.png" /> Source/Destination Marker ' +
-					'<img src="assets/station_marker.png" /> Station ' +
-					'<img src="assets/people_marker.png" /> Client ' +
-					'<img src="assets/event_marker.png" /> Event '
+					'<img src="' + $scope.BASEURL + '/assets/src_dest_marker.png" /> Source/Destination Marker ' +
+					'<img src="' + $scope.BASEURL + '/assets/station_marker.png" /> Station ' +
+					'<img src="' + $scope.BASEURL + '/assets/people_marker.png" /> Client '
 				controlUI.appendChild(controlText);
 			}
 
-			function EventControl(controlDiv) {
+			// function EventControl(controlDiv) {
 
-				// // Set CSS for the control border
-				var controlUI = document.createElement('div');
-				controlUI.style.backgroundColor = '#fff';
-				controlUI.style.border = '2px solid #fff';
-				controlUI.style.borderRadius = '3px';
-				controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-				controlUI.style.cursor = 'pointer';
-				controlUI.style.marginBottom = '22px';
-				controlUI.style.textAlign = 'center';
-				controlDiv.appendChild(controlUI);
+			// 	// // Set CSS for the control border
+			// 	var controlUI = document.createElement('div');
+			// 	controlUI.style.backgroundColor = '#fff';
+			// 	controlUI.style.border = '2px solid #fff';
+			// 	controlUI.style.borderRadius = '3px';
+			// 	controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+			// 	controlUI.style.cursor = 'pointer';
+			// 	controlUI.style.marginBottom = '22px';
+			// 	controlUI.style.textAlign = 'center';
+			// 	controlDiv.appendChild(controlUI);
 
-				var checkbox = document.createElement('input');
-				checkbox.type = "checkbox";
-				checkbox.name = "eventCheckBox";
-				checkbox.value = "value";
-				checkbox.id = "eventCheckBox";
+			// 	var checkbox = document.createElement('input');
+			// 	checkbox.type = "checkbox";
+			// 	checkbox.name = "eventCheckBox";
+			// 	checkbox.value = "value";
+			// 	checkbox.id = "eventCheckBox";
 
-				var label = document.createElement('label')
-				label.style.fontFamily = 'Roboto';
-				label.style.fontSize = '20px';
-				label.style.paddingLeft = '5px';
-				label.style.paddingRight = '5px';
-				label.htmlFor = "id";
-				label.id = "eventLabel";
-				label.name = "eventLabel";
-				label.innerHTML = 'Show Events';
+			// 	var label = document.createElement('label')
+			// 	label.style.fontFamily = 'Roboto';
+			// 	label.style.fontSize = '20px';
+			// 	label.style.paddingLeft = '5px';
+			// 	label.style.paddingRight = '5px';
+			// 	label.htmlFor = "id";
+			// 	label.id = "eventLabel";
+			// 	label.name = "eventLabel";
+			// 	label.innerHTML = 'Show Events';
 
-				controlUI.appendChild(checkbox);
-				controlUI.appendChild(label);
+			// 	controlUI.appendChild(checkbox);
+			// 	controlUI.appendChild(label);
 
-				google.maps.event.addDomListener(checkbox, 'change', function() {
-					if ($('#eventCheckBox').prop("checked")) {
-						document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
-						$scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
-						$scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
-						$scope.sliderFlag = true;
-						showEvents();
+			// 	google.maps.event.addDomListener(checkbox, 'change', function() {
+			// 		if ($('#eventCheckBox').prop("checked")) {
+			// 			document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
+			// 			$scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
+			// 			$scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
+			// 			$scope.sliderFlag = true;
+			// 			showEvents();
 
-					} else {
-						emptyEventList()
-						removeMarkers();
-						$scope.sliderFlag = false;
-						document.getElementById('eventLabel').innerHTML = 'Show Events';
-						$scope.$apply();
-					}
-				});
+			// 		} else {
+			// 			emptyEventList()
+			// 			removeMarkers();
+			// 			$scope.sliderFlag = false;
+			// 			document.getElementById('eventLabel').innerHTML = 'Show Events';
+			// 			$scope.$apply();
+			// 		}
+			// 	});
 
-			}
+			// }
 
 			function emptyEventList() {
 				$scope.eventList = [];
@@ -332,7 +342,7 @@ angular
 								address: address,
 								participants: meeting_participants,
 								time: time,
-								center:map_center
+								center: map_center
 							});
 							createMarker(map_center, address, 'event');
 						}
@@ -349,23 +359,23 @@ angular
 				var img;
 				if (marker_type === "src_dest") {
 					img = {
-						url: 'assets/src_dest_marker.png',
+						url: $scope.BASEURL + '/assets/src_dest_marker.png',
 						origin: new google.maps.Point(0, 0),
 					};
 
 				} else if (marker_type === "station") {
 					img = {
-						url: 'assets/station_marker.png',
+						url: $scope.BASEURL + '/assets/station_marker.png',
 						origin: new google.maps.Point(0, 0),
 					};
 				} else if (marker_type === "suggestion") {
 					img = {
-						url: 'assets/people_marker.png',
+						url: $scope.BASEURL + '/assets/people_marker.png',
 						origin: new google.maps.Point(0, 0),
 					};
 				} else if (marker_type === "event") {
 					img = {
-						url: 'assets/event_marker.png',
+						url: $scope.BASEURL + '/assets/event_marker.png',
 						origin: new google.maps.Point(0, 0),
 					};
 				}
@@ -399,7 +409,7 @@ angular
 
 			};
 
-			$scope.setMapCenter=function(center_point) {
+			$scope.setMapCenter = function(center_point) {
 				$scope.map.setCenter(center_point);
 				$scope.map.setZoom(16);
 			};
@@ -452,6 +462,13 @@ angular
 			};
 
 			$scope.calcRoute = function() {
+				$scope.modRoute = false
+				if (directionsDisplay != null) {
+					directionsDisplay.setMap(null);
+					directionsDisplay = null;
+				}
+				directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+				directionsService = new google.maps.DirectionsService();
 				$scope.loadingStatus = true;
 				removeMarkers();
 				removePolyLines();
@@ -473,8 +490,7 @@ angular
 						console.log('GeoCoding Error');
 					});
 				} else {
-					var directionsService = new google.maps.DirectionsService();
-					var directionsDisplay = new google.maps.DirectionsRenderer();
+
 					var end = $scope.destination_address;
 					var request;
 					$scope.tMode = $scope.travelMode;
@@ -509,11 +525,20 @@ angular
 
 					directionsService.route(request, plotRoute);
 					directionsDisplay.setMap($scope.map);
+					google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+						$scope.modRoute = true;
+						$scope.routesList.length = 0;
+						$scope.routeCallbackData = directionsDisplay.directions;
+						var currentRoute = directionsDisplay.directions.routes[0];
+						var colour = $scope.colors.length - 1;
+						setRouteToArray(currentRoute, colour);
+					});
 				}
 			};
 
 			function plotRoute(response, status) {
 				if (status == google.maps.DirectionsStatus.OK) {
+					// console.log(response);		
 
 					var leng = response.routes[0].legs[0].steps.length;
 					createMarker(
@@ -524,13 +549,9 @@ angular
 						$scope.destination_address,
 						"src_dest");
 					$scope.routeCallbackData = response;
-					for (var i = 0, len = response.routes.length; i < len; i++) {
-						var currentRoute = response.routes[i];
-						var steps = currentRoute.legs[0].steps;
-						$scope.polyLineData[i] = currentRoute.overview_path;
-						createPolyRoute(steps, i, currentRoute);
-
-					}
+					initPolylineRender(response);
+					$scope.loadingStatus = false;
+					$scope.$apply();
 					var bounds = new google.maps.LatLngBounds();
 					bounds
 						.extend(response.routes[0].legs[0].steps[0].start_point);
@@ -542,6 +563,16 @@ angular
 				}
 
 			};
+
+			function initPolylineRender(response) {
+				for (var i = 0, len = response.routes.length; i < len; i++) {
+					var currentRoute = response.routes[i];
+					$scope.polyLineData[i] = currentRoute.overview_path;
+					createPolyRoute(i, currentRoute);
+
+
+				}
+			}
 
 			function setMarkers() {
 				for (var i = 0; i < markers.length; i++) {
@@ -556,7 +587,8 @@ angular
 				markers.length = 0;
 			};
 
-			function createPolyRoute(steps, i, currentRoute) {
+			function createPolyRoute(i, currentRoute) {
+				var steps = currentRoute.legs[0].steps;
 				var path = Array();
 				var width = ["10", "8", "6", "4", "2", "1"];
 				var routeAlreadyExists = false;
@@ -595,8 +627,7 @@ angular
 						'strokeColor': $scope.colors[i],
 						'strokeOpacity': '1',
 					};
-					var route_info = [];
-					route_info.length = 0;
+
 					var newPoly = new google.maps.Polyline(
 						polyUnselected);
 					newPoly.setPath(path);
@@ -617,53 +648,75 @@ angular
 								newPoly
 									.setOptions(polyUnselected);
 							});
+					google.maps.event
+						.addListener(
+							newPoly,
+							'click',
+							function() {
+								// console.log($scope.routeCallbackData);
+								removePolyLines();
+								// console.log($scope.routeCallbackData);
+								var temp = $scope.routeCallbackData;
+								var obj = $scope.routeCallbackData.routes[i];
+								temp.routes.length = 0;
+								temp.routes.push(obj);
+								directionsDisplay.setDirections(temp);
+
+							});
 					$scope.polyLine.push(newPoly);
-					for (var j = 0; j < steps.length; j++) {
-						if (steps[j].travel_mode === "TRANSIT") {
-							var stop_name = steps[j].transit.arrival_stop.name;
-							var line_name;
-							if (steps[j].transit.line.short_name === null) {
-								line_name = steps[j].transit.line.name;
-							} else {
-								line_name = steps[j].transit.line.short_name;
-							}
-							var vech = steps[j].transit.line.vehicle.name;
-							var icon = steps[j].transit.line.vehicle.icon;
-							route_info
-								.push({
-									travelInfo: "Take " + vech + " to " + stop_name + " along " + line_name,
-									vechIcon: "assets/_subway.png",
-									end_location: steps[j].end_location
-								});
-						} else if (steps[j].travel_mode === "DRIVING") {
-							route_info
-								.push({
-									travelInfo: steps[j].instructions,
-									vechIcon: "assets/_car.png",
-								});
-
-						} else {
-							route_info
-								.push({
-									travelInfo: steps[j].instructions,
-									vechIcon: "assets/_walking.png",
-								});
-
-						}
-					}
-					$scope.routesList
-						.push({
-							distanceOfRoute: currentRoute.legs[0].distance.text,
-							timeOfRoute: currentRoute.legs[0].duration.text,
-							routeColor: $scope.colors[i],
-							routeInfo: route_info,
-							pOverview: currentRoute.overview_polyline
-						});
-					$scope.loadingStatus = false;
-					$scope.$apply();
+					setRouteToArray(currentRoute, i);
 				}
 
 			};
+
+			function setRouteToArray(currentRoute, colour) {
+				var steps = currentRoute.legs[0].steps;
+				var route_info = [];
+				route_info.length = 0;
+				for (var j = 0; j < steps.length; j++) {
+					if (steps[j].travel_mode === "TRANSIT") {
+						var stop_name = steps[j].transit.arrival_stop.name;
+						var line_name;
+						if (steps[j].transit.line.short_name === null) {
+							line_name = steps[j].transit.line.name;
+						} else {
+							line_name = steps[j].transit.line.short_name;
+						}
+						var vech = steps[j].transit.line.vehicle.name;
+						var icon = steps[j].transit.line.vehicle.icon;
+						route_info
+							.push({
+								travelInfo: "Take " + vech + " to " + stop_name + " along " + line_name,
+								vechIcon: $scope.BASEURL + "/assets/_subway.png",
+								end_location: steps[j].end_location
+							});
+					} else if (steps[j].travel_mode === "DRIVING") {
+						route_info
+							.push({
+								travelInfo: steps[j].instructions,
+								vechIcon: $scope.BASEURL + "/assets/_car.png",
+							});
+
+					} else {
+						route_info
+							.push({
+								travelInfo: steps[j].instructions,
+								vechIcon: $scope.BASEURL + "/assets/_walking.png",
+							});
+
+					}
+				}
+				$scope.routesList
+					.push({
+						distanceOfRoute: currentRoute.legs[0].distance.text,
+						timeOfRoute: currentRoute.legs[0].duration.text,
+						routeColor: $scope.colors[colour],
+						routeInfo: route_info,
+						pOverview: currentRoute.overview_polyline
+					});
+				$scope.loadingStatus = false;
+				$scope.$apply();
+			}
 			removeCircles = function() {
 				if (circles.length > 0) {
 					for (var i = 0; i < circles.length; i++) {
@@ -672,23 +725,24 @@ angular
 				}
 			};
 
-			// function remove_duplicates(objectsArray) {
-			// 	var usedObjects = {};
+			function remove_duplicates(objectsArray) {
+				var usedObjects = {};
 
-			// 	for (var i = objectsArray.length - 1; i >= 0; i--) {
-			// 		var so = JSON.stringify(objectsArray[i]);
+				for (var i = objectsArray.length - 1; i >= 0; i--) {
+					var so = JSON.stringify(objectsArray[i]);
 
-			// 		if (usedObjects[so]) {
-			// 			objectsArray.splice(i, 1);
+					if (usedObjects[so]) {
+						objectsArray.splice(i, 1);
+						$scope.pincodeArray.splice(i, 1);
 
-			// 		} else {
-			// 			usedObjects[so] = true;
-			// 		}
-			// 	}
+					} else {
+						usedObjects[so] = true;
+					}
+				}
 
-			// 	return objectsArray;
+				// return objectsArray;
 
-			// }
+			}
 
 			function renderCircle(center_point, single_point_flag) {
 				var c = new google.maps.Circle({
@@ -725,7 +779,7 @@ angular
 						lng: center.lng()
 					});
 				}
-				console.log(cicle_data);
+				// console.log(cicle_data);
 				q.resolve();
 				return q.promise;
 			}
@@ -779,10 +833,10 @@ angular
 				var dataObj = payload.data;
 
 				for (var userIndex = 0; userIndex < dataObj.length; userIndex++) {
-					var addressArray = [];
-					addressArray.length = 0;
-					var pincodeArray = [];
-					pincodeArray.length = 0;
+					$scope.addressArray = [];
+					$scope.addressArray.length = 0;
+					$scope.pincodeArray = [];
+					$scope.pincodeArray.length = 0;
 					var sname;
 
 					for (var addressIndex = 0; addressIndex < dataObj[userIndex].known_addresses.length; addressIndex++) {
@@ -791,32 +845,60 @@ angular
 						var map_center = new google.maps.LatLng(
 							Number(current_user_address.lat),
 							Number(current_user_address.lng));
-						if (within_bounds) {
-							addressArray.push({
-								address_type: current_user_address.address_type + " - " + current_user_address.address_humanized
-							});
-							pincodeArray.push({
-								pincode: current_user_address.pincode
-							});
-							sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
-							createMarker(
-								map_center,
-								sname + " - " + current_user_address.address_type,
-								"suggestion");
+						if ($rootScope.infoFrom === 'url') {
+							if (within_bounds) {
+								$scope.addressArray.push({
+									address_type: current_user_address.address_type + " - " + current_user_address.address_humanized
+								});
+								$scope.pincodeArray.push({
+									pincode: current_user_address.pincode
+								});
+								sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
+								createMarker(
+									map_center,
+									sname + " - " + current_user_address.address_type,
+									"suggestion");
+
+							}
+						} else if ($rootScope.infoFrom === 'file') {
+							for (var circleIndex = 0; circleIndex < circles.length; circleIndex++) {
+
+
+								var bounds = circles[circleIndex].getBounds();
+								var map_center = new google.maps.LatLng(
+									Number(current_user_address.lat),
+									Number(current_user_address.lng));
+								if (bounds.contains(map_center)) {
+									$scope.addressArray.push({
+										address_type: current_user_address.address_type + " - " + current_user_address.address_humanized
+									});
+									$scope.pincodeArray.push({
+										pincode: current_user_address.pincode
+									});
+
+									sname = dataObj[userIndex].first_name + " " + dataObj[userIndex].last_name;
+									createMarker(
+										map_center,
+										sname + " - " + current_user_address.address_type,
+										"suggestion");
+								}
+							}
+
 
 						}
 
 					}
 
-					if (addressArray.length > 0) {
+					if ($scope.addressArray.length > 0) {
+						remove_duplicates($scope.addressArray)
 						$scope.suggestionList
 							.push({
 								name: sname,
 								emailID: dataObj[userIndex].email,
 								id: dataObj[userIndex].id,
-								pincodes: pincodeArray,
-								addresses: addressArray,
-								rowspan: addressArray.length
+								pincodes: $scope.pincodeArray,
+								addresses: $scope.addressArray,
+								rowspan: $scope.addressArray.length
 							});
 
 					}
@@ -827,10 +909,11 @@ angular
 				}
 			}
 
+
 			function findStations(routeIndex) {
 				$http
 					.get(
-						'assets/stations.kml')
+						$scope.BASEURL + '/assets/stations.kml')
 					.then(
 						function(
 							response) {
@@ -895,7 +978,7 @@ angular
 				if (_.isUndefined(routeIndex)) {
 					routeIndex = -1;
 				}
-				if(_.isUndefined($scope.origin_address) || _.isNull($scope.origin_address)){
+				if (_.isUndefined($scope.origin_address) || _.isNull($scope.origin_address)) {
 					return false;
 				}
 				$scope.tempIndex = routeIndex;
