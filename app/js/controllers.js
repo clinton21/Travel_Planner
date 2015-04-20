@@ -2,7 +2,7 @@
  * Created by Clinton on 01-02-2015.
  */
 angular
-	.module('mapApp.controllers', ['cb.x2js', 'ui.utils', 'ui.bootstrap', 'ui.bootstrap-slider'])
+	.module('mapApp.controllers', ['cb.x2js', 'ui.utils', 'ui.bootstrap', 'ui.bootstrap-slider', 'daterangepicker'])
 
 .controller(
 	'mapController', [
@@ -15,15 +15,19 @@ angular
 		'$q',
 		function($rootScope, $scope, $http, $stateParams, x2js, userData, $q) {
 
-			var LatLong = new google.maps.LatLng(51.5072,
-				0.1275);
+			var LatLong = new google.maps.LatLng(51.5072,0.1275);
 			var markers = [];
+
+			//colors for routes
 			$scope.colors = ['Red', 'Orange', 'Yellow',
 				'Green', 'Blue', 'Indigo', 'Violet', '#308FE3'
 			];
+
 			$rootScope.infoFrom = 'file';
-			$scope.routesList = [];
-			$scope.routeCallbackData;
+
+
+			$scope.routesList = []; //info about the routes
+			$scope.routeCallbackData; //route response from server
 			$scope.polyLineData = [];
 			$scope.stationLocation = [];
 			$scope.stationData = [];
@@ -34,8 +38,7 @@ angular
 			$scope.tMode;
 			$scope.loadingStatus = false;
 			$scope.searchRadius = 2;
-			$scope.tempIndex;
-			$scope.sliderDate;
+			$scope.tempIndex; //stores index for changing size of circle
 			$scope.errorMsg;
 			$scope.geoPoint;
 			var cicle_data = {};
@@ -51,6 +54,10 @@ angular
 			var directionsDisplay;
 			var directionsService;
 			$scope.modRoute = false;
+			$scope.date = {
+				startDate: null,
+				endDate: null
+			};
 
 
 
@@ -182,30 +189,28 @@ angular
 					}]
 
 				};
-				$scope.sliderDate = moment().add(0, 'd').format("DD/MM/YYYY");
 				$scope.map = new google.maps.Map(document
 					.getElementById('map-canvas'),
 					mapOptions);
-				// var eventControlDiv = document.createElement('div');
-				// var eventControl = new EventControl(eventControlDiv);
-				// eventControlDiv.index = 1;
-				// $scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
+				var eventControlDiv = document.createElement('div');
+				var eventControl = new EventControl(eventControlDiv);
+				eventControlDiv.index = 1; //TODO: check if this is necessary
+				$scope.map.controls[google.maps.ControlPosition.TOP_CENTER].push(eventControlDiv);
 				var legendDiv = document.createElement('DIV');
 				var legend = new Legend(legendDiv);
-				legendDiv.index = 1;
+				legendDiv.index = 1; //TODO: check if this is necessary
 				$scope.map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(legendDiv);
 			};
 
+			//Update the start and end date in the date range picker
 			$scope.updateDate = function() {
-				$scope.sliderDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
-				$scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
-				$scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
+
+				$scope.startDate = moment($scope.date.startDate).format("DD/MM/YYYY");
+				$scope.endDate = moment($scope.date.endDate).format("DD/MM/YYYY");
 				showEvents();
 			}
-			$scope.formaterFn = function(value) {
-				return moment().add($scope.searchDate, 'd').format("MMM DD YYYY");
-			};
 
+			//GeoCode Address
 			function geoCodeAddress() {
 				var geocoder = new google.maps.Geocoder();
 				var q = $q.defer();
@@ -232,7 +237,7 @@ angular
 				}
 			}
 
-			function Legend(controlDiv, map) {
+			function Legend(controlDiv) {
 				// Set CSS styles for the DIV containing the control
 				// Setting padding to 5 px will offset the control
 				// from the edge of the map
@@ -261,62 +266,63 @@ angular
 				controlUI.appendChild(controlText);
 			}
 
-			// function EventControl(controlDiv) {
+			function EventControl(controlDiv) {
 
-			// 	// // Set CSS for the control border
-			// 	var controlUI = document.createElement('div');
-			// 	controlUI.style.backgroundColor = '#fff';
-			// 	controlUI.style.border = '2px solid #fff';
-			// 	controlUI.style.borderRadius = '3px';
-			// 	controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
-			// 	controlUI.style.cursor = 'pointer';
-			// 	controlUI.style.marginBottom = '22px';
-			// 	controlUI.style.textAlign = 'center';
-			// 	controlDiv.appendChild(controlUI);
+				// // Set CSS for the control border
+				var controlUI = document.createElement('div');
+				controlUI.style.backgroundColor = '#fff';
+				controlUI.style.border = '2px solid #fff';
+				controlUI.style.borderRadius = '3px';
+				controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+				controlUI.style.cursor = 'pointer';
+				controlUI.style.marginBottom = '22px';
+				controlUI.style.textAlign = 'center';
+				controlDiv.appendChild(controlUI);
 
-			// 	var checkbox = document.createElement('input');
-			// 	checkbox.type = "checkbox";
-			// 	checkbox.name = "eventCheckBox";
-			// 	checkbox.value = "value";
-			// 	checkbox.id = "eventCheckBox";
+				var checkbox = document.createElement('input');
+				checkbox.type = "checkbox";
+				checkbox.name = "eventCheckBox";
+				checkbox.value = "value";
+				checkbox.id = "eventCheckBox";
 
-			// 	var label = document.createElement('label')
-			// 	label.style.fontFamily = 'Roboto';
-			// 	label.style.fontSize = '20px';
-			// 	label.style.paddingLeft = '5px';
-			// 	label.style.paddingRight = '5px';
-			// 	label.htmlFor = "id";
-			// 	label.id = "eventLabel";
-			// 	label.name = "eventLabel";
-			// 	label.innerHTML = 'Show Events';
+				var label = document.createElement('label')
+				label.style.fontFamily = 'Roboto';
+				label.style.fontSize = '20px';
+				label.style.paddingLeft = '5px';
+				label.style.paddingRight = '5px';
+				label.htmlFor = "id";
+				label.id = "eventLabel";
+				label.name = "eventLabel";
+				label.innerHTML = 'Show Events';
 
-			// 	controlUI.appendChild(checkbox);
-			// 	controlUI.appendChild(label);
+				controlUI.appendChild(checkbox);
+				controlUI.appendChild(label);
 
-			// 	google.maps.event.addDomListener(checkbox, 'change', function() {
-			// 		if ($('#eventCheckBox').prop("checked")) {
-			// 			document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
-			// 			$scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
-			// 			$scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
-			// 			$scope.sliderFlag = true;
-			// 			showEvents();
+				google.maps.event.addDomListener(checkbox, 'change', function() {
+					if ($('#eventCheckBox').prop("checked")) {
+						document.getElementById('eventLabel').innerHTML = 'Showing Your Events';
+						// $scope.startDate = moment().add($scope.searchDate, 'd').format("DD/MM/YYYY");
+						// $scope.endDate = moment().add(($scope.searchDate + 30), 'd').format("DD/MM/YYYY");
+						$scope.sliderFlag = true;
+						showEvents();
 
-			// 		} else {
-			// 			emptyEventList()
-			// 			removeMarkers();
-			// 			$scope.sliderFlag = false;
-			// 			document.getElementById('eventLabel').innerHTML = 'Show Events';
-			// 			$scope.$apply();
-			// 		}
-			// 	});
+					} else {
+						emptyEventList()
+						removeMarkers();
+						$scope.sliderFlag = false;
+						document.getElementById('eventLabel').innerHTML = 'Show Events';
+						$scope.$apply();
+					}
+				});
 
-			// }
+			}
 
 			function emptyEventList() {
 				$scope.eventList = [];
-				for (var i = 0; i < $scope.eventList.length; i++) {
-					$scope.eventList.splice(i, 1);
-				}
+				//TODO: check if this is necessary
+				// for (var i = 0; i < $scope.eventList.length; i++) {
+				// 	$scope.eventList.splice(i, 1);
+				// }
 			}
 
 			function showEvents() {
@@ -414,7 +420,7 @@ angular
 				$scope.map.setZoom(16);
 			};
 
-
+			//Searchbox for source and destination
 			var input1 = (document
 				.getElementById('origin-input'));
 			var input2 = (document
